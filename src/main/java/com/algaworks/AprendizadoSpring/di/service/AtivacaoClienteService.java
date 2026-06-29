@@ -1,13 +1,19 @@
 package com.algaworks.AprendizadoSpring.di.service;
 
 import com.algaworks.AprendizadoSpring.di.modelo.Cliente;
-import com.algaworks.AprendizadoSpring.di.notificacao.NotificadorEmail;
+import com.algaworks.AprendizadoSpring.di.notificacao.Notificador;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AtivacaoClienteService {
 
-    private NotificadorEmail notificador;
+    private Notificador notificador;
+
+    public AtivacaoClienteService(Notificador notificador) {
+        this.notificador = notificador;
+
+        System.out.println("AtivacaoClienteService: " + notificador);
+    }
 
     public void ativar(Cliente cliente) {
         cliente.ativar();
