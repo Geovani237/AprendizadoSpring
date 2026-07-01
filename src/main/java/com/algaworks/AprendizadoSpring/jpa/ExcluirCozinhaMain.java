@@ -2,6 +2,7 @@ package com.algaworks.AprendizadoSpring.jpa;
 
 import com.algaworks.AprendizadoSpring.AprendizadoSpringApplication;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
+import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -12,7 +13,7 @@ public class ExcluirCozinhaMain {
                 .web(WebApplicationType.NONE)
                 .run(args);
 
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cadastroCozinha = applicationContext.getBean(CozinhaRepository.class);
 
 
         Cozinha cozinha = new Cozinha();

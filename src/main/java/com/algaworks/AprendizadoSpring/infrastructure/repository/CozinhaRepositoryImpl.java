@@ -1,6 +1,8 @@
-package com.algaworks.AprendizadoSpring.jpa;
+package com.algaworks.AprendizadoSpring.infrastructure.repository;
+
 
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
+import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -9,25 +11,29 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Component
-public class CadastroCozinha {
+public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @PersistenceContext
     private EntityManager manager;
 
+    @Override
     public List<Cozinha> listar() {
         return manager.createQuery("from Cozinha", Cozinha.class).getResultList();
     }
 
+    @Override
     public Cozinha buscar(Long id) {
         return manager.find(Cozinha.class, id);
     }
 
     @Transactional
+    @Override
     public Cozinha salvar(Cozinha cozinha) {
         return manager.merge(cozinha);
     }
 
     @Transactional
+    @Override
     public void remover(Cozinha cozinha) {
         cozinha = buscar(cozinha.getId());
         manager.remove(cozinha);
