@@ -5,10 +5,7 @@ import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,15 +18,13 @@ public class CozinhaController {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisições com Get chegam até esse metodo
-    public List<Cozinha> lista1() {
-        System.out.println("LISTAR 1");
+    @GetMapping //Requisições com Get chegam até esse metodo
+    public List<Cozinha> lista() {
         return cozinhaRepository.listar();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public List<Cozinha> lista2() {
-        System.out.println("LISTAR 2");
-        return cozinhaRepository.listar();
+    @GetMapping("/{cozinhaId}")
+    public Cozinha buscar(@PathVariable Long cozinhaId) {
+        return cozinhaRepository.buscar(cozinhaId);
     }
 }
