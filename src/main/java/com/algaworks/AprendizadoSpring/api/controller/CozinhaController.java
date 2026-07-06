@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.model.CozinhaXmlWrapper;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class CozinhaController {
     @GetMapping //Requisições com Get chegam até esse metodo
     public List<Cozinha> lista() {
         return cozinhaRepository.listar();
+    }
+
+    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
+    public CozinhaXmlWrapper listaXml() {
+        return new CozinhaXmlWrapper(cozinhaRepository.listar());
     }
 
     @GetMapping("/{cozinhaId}")
