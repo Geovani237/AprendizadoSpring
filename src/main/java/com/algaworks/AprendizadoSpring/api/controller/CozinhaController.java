@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.api.controller;
 import com.algaworks.AprendizadoSpring.api.model.CozinhaXmlWrapper;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,21 @@ public class CozinhaController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cozinha adicionar(@RequestBody Cozinha cozinha) {
         return cozinhaRepository.salvar(cozinha);
+    }
+
+    @PutMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
+
+        if (cozinhaAtual != null) {
+//        cozinhaAtual.setNome(cozinha.getNome());
+            BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+
+            cozinhaRepository.salvar(cozinhaAtual);
+            return ResponseEntity.ok().body(cozinhaAtual);
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 }
