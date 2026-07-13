@@ -1,6 +1,5 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
-import com.algaworks.AprendizadoSpring.api.model.CozinhaXmlWrapper;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
@@ -8,9 +7,7 @@ import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +30,7 @@ public class CozinhaController {
         return cozinhaRepository.listar();
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-    public CozinhaXmlWrapper listaXml() {
-        return new CozinhaXmlWrapper(cozinhaRepository.listar());
-    }
+
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
@@ -62,7 +56,7 @@ public class CozinhaController {
 //        cozinhaAtual.setNome(cozinha.getNome());
             BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 
-            cozinhaRepository.salvar(cozinhaAtual);
+            cadastroCozinha.salvar(cozinhaAtual);
             return ResponseEntity.ok().body(cozinhaAtual);
         }
         return ResponseEntity.notFound().build();
