@@ -4,13 +4,14 @@ import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class CidadeRepositoryImpl implements CidadeRepository {
 
     @PersistenceContext

@@ -3,13 +3,14 @@ package com.algaworks.AprendizadoSpring.infrastructure.repository;
 import com.algaworks.AprendizadoSpring.domain.model.FormaPagamento;
 import com.algaworks.AprendizadoSpring.domain.repository.FormaPagamentoRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
 
     @PersistenceContext
