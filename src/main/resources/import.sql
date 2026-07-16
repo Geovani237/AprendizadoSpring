@@ -1,9 +1,11 @@
 insert into cozinha (id, nome) values (1, 'Francesa');
 insert into cozinha (id, nome) values (2, 'Brasileira');
+insert into cozinha (id, nome) values (3, 'Chinesa');
 
 insert into restaurante (id, nome, taxa_frete, cozinha_id) values (1,'La Ratatouille', '150.00', 1);
 insert into restaurante (id, nome, taxa_frete, cozinha_id) values (2,'La Delivery', '20.00', 1);
 insert into restaurante (id, nome, taxa_frete, cozinha_id) values (3,'Kong Restaurante', '15.00', 2);
+insert into restaurante (id, nome, taxa_frete, cozinha_id) values (4,'Yaksoba', '0', 3);
 
 insert into estado (id, nome) values (1, 'Minas Gerais');
 insert into estado (id, nome) values (2, 'São Paulo');
