@@ -29,7 +29,7 @@ public class Produto {
     private Boolean ativo;
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "restaurante_id", nullable = false)
     private Restaurante restaurante;
 
 }
