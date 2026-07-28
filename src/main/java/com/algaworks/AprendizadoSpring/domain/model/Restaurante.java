@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +30,9 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     //Many restaurantes podem pertencer a One cozinha
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)//Todas as associações ...ToOne usa Eager Loading, que seria um carregamento ansioso/antecipado
+//    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @JsonIgnore
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
@@ -48,7 +51,7 @@ public class Restaurante {
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany//Toda associações que termina com ...ToMany usa a estratégia Lazy Loading por padrão
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),
     inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
