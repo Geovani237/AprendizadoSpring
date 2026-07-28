@@ -30,9 +30,9 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     //Many restaurantes podem pertencer a One cozinha
-    @ManyToOne(fetch = FetchType.LAZY)//Todas as associações ...ToOne usa Eager Loading, que seria um carregamento ansioso/antecipado
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
-    @JsonIgnore
+//    @JsonIgnore
+    @ManyToOne//(fetch = FetchType.LAZY)//Todas as associações ...ToOne usa Eager Loading, que seria um carregamento ansioso/antecipado
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
@@ -50,7 +50,7 @@ public class Restaurante {
     @Column(nullable = false)
     private LocalDateTime dataAtualizacao;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany//Toda associações que termina com ...ToMany usa a estratégia Lazy Loading por padrão
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),
