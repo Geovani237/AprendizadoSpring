@@ -50,7 +50,7 @@ public class Restaurante {
     @Column(nullable = false)
     private LocalDateTime dataAtualizacao;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToMany//Toda associações que termina com ...ToMany usa a estratégia Lazy Loading por padrão
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),
