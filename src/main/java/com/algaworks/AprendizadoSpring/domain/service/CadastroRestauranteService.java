@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroRestauranteService {
 
-    private static final String MSG_COZINHA_NAO_ENCONTRADAO = "Não existe cadastro de cozinha com código %d";
-    private static final String MSG_RESTAURANTE_NAO_ENCONTRADAO = "Não existe cadastro de restaurante com código %d";
+//    private static final String MSG_COZINHA_NAO_ENCONTRADAO = "Não existe cadastro de cozinha com código %d";
+//    private static final String MSG_RESTAURANTE_NAO_ENCONTRADAO = "Não existe cadastro de restaurante com código %d";
 
     @Autowired
     private RestauranteRepository restauranteRepository;
@@ -35,6 +36,6 @@ public class CadastroRestauranteService {
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADAO, restauranteId)));
+                .orElseThrow(() -> new RestauranteNaoEncontradaException(restauranteId));
     }
 }
