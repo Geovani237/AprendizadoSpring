@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.AprendizadoSpring.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
@@ -32,8 +33,8 @@ public class CidadeController {
     public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cadastroCidade.salvar(cidade);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
@@ -53,8 +54,8 @@ public class CidadeController {
 
         try {
             return cadastroCidade.salvar(cidadeAtual);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (EstadoNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 

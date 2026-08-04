@@ -2,6 +2,7 @@ package com.algaworks.AprendizadoSpring.domain.service;
 
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.AprendizadoSpring.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.algaworks.AprendizadoSpring.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,8 @@ public class CadastroEstadoService {
         try {
             estadoRepository.deleteById(estadoId);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)
-            );
+            throw new EstadoNaoEncontradaException(estadoId);
+
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format(MSG_ESTADO_EM_USO, estadoId)
@@ -39,7 +39,6 @@ public class CadastroEstadoService {
 
     public Estado buscarOuFalhar(Long estadoId) {
         return estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId)));
+                .orElseThrow(() -> new EstadoNaoEncontradaException(estadoId));
     }
 }
