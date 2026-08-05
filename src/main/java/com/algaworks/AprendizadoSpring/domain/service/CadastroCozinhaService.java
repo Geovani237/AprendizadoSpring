@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroCozinhaService {
 
-//    private static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe um cadastro de cozinha com código %d";
     private static final String MSG_COZINHA_EM_USO = "Cozinha de código %d não pode ser removida, poís está em uso";
 
     @Autowired

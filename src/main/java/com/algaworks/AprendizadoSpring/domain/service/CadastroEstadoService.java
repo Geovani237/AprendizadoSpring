@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroEstadoService {
 
-//    private static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existe um cadastro de estado com código %d";
     private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida, poís está em uso";
 
     @Autowired
@@ -28,6 +27,7 @@ public class CadastroEstadoService {
             estadoRepository.deleteById(estadoId);
         } catch (EmptyResultDataAccessException e) {
             throw new EstadoNaoEncontradaException(estadoId);
+            //A mensagem vem de dentro da própria classe
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(

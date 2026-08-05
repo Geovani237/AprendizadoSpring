@@ -12,9 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroRestauranteService {
 
-//    private static final String MSG_COZINHA_NAO_ENCONTRADAO = "Não existe cadastro de cozinha com código %d";
-//    private static final String MSG_RESTAURANTE_NAO_ENCONTRADAO = "Não existe cadastro de restaurante com código %d";
-
     @Autowired
     private RestauranteRepository restauranteRepository;
 
