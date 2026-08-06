@@ -95,6 +95,25 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+                                                             HttpStatus status, WebRequest request) {
+
+        if (body == null) {
+            body = Problem.builder()
+                    .title(status.getReasonPhrase())
+                    .status(status.value())
+                    .build();
+        } else if (body instanceof String) {
+            body = Problem.builder()
+                    .title((String) body)
+                    .status(status.value())
+                    .build();
+        }
+
+        return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
         String path = joinPath(ex.getPath());
@@ -123,27 +142,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
-    }
-
-
-
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
-
-        if (body == null) {
-            body = Problem.builder()
-                    .title(status.getReasonPhrase())
-                    .status(status.value())
-                    .build();
-        } else if (body instanceof String) {
-            body = Problem.builder()
-                    .title((String) body)
-                    .status(status.value())
-                    .build();
-        }
-
-        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
     private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
