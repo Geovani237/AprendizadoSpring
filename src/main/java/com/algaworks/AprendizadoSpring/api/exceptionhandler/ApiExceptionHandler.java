@@ -4,7 +4,8 @@ import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.flywaydb.core.internal.util.ExceptionUtils;
+//import org.flywaydb.core.internal.util.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        ex.getPath().forEach(e -> System.out.println(e.getFieldName()));
 
         String path = ex.getPath().stream()
                 .map(ref -> ref.getFieldName())
