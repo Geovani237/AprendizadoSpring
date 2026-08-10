@@ -5,7 +5,6 @@ import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaExc
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-//import org.flywaydb.core.internal.util.ExceptionUtils;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +18,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.lang.ref.Reference;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//import org.flywaydb.core.internal.util.ExceptionUtils;
 
 
 // @ControllerAdvice -> Componente interceptor (AOP) do Spring que centraliza
@@ -32,6 +31,10 @@ import java.util.stream.Collectors;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     //ResponseEntityExceptionHandler -> Classe base estendível para manipular
     //e padronizar exceções nativas do ecossistema Spring MVC.
+
+    public static final String MSG_ERRO_USUARIO = "Ocorreu um erro interno inesperado no sistema. "
+            + "Tente novamente e se o problema persistir, entre em contato "
+            + "com o administrador do sistema.";
 
     //@ExceptionHandler -> Anotação que mapeia exceções específicas para métodos manipuladores
     //dentro de controllers ou conselheiros globais.
@@ -42,7 +45,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADA;
         String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .timestamp(LocalDateTime.now())
+                .build();
 
 //        Problem problem = Problem.builder()
 //                .status(status.value())
@@ -62,7 +68,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         ProblemType problemType = ProblemType.ENTIDADE_EM_USO;
 
-        Problem problem = createProblemBuilder(status, problemType, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(status, problemType, ex.getMessage())
+                .userMessage(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
     }
@@ -74,7 +83,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.NEGOCIO;
 
 
-        Problem problem = createProblemBuilder(status, problemType, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(status, problemType, ex.getMessage())
+                .userMessage(MSG_ERRO_USUARIO)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -91,7 +103,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("O parâmetro de URL '%s' recebeu o valor '%s', que é de um tipo inválido. " +
                 "Corrija e informe um valor compatível com tipo %s.", urlParam, exValue,type );
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage("O valor informado '" + exValue + "' é inválido")
+                .timestamp(LocalDateTime.now())
+                .build();
 
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
@@ -102,9 +117,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
-        String detail = "Ocorreu um erro interno inesperado no sistema. "
-                + "Tente novamente e se o problema persistir, entre em contato "
-                + "com o administrador do sistema.";
+        String detail = MSG_ERRO_USUARIO;
 
         // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
         // fazendo logging) para mostrar a stacktrace no console
@@ -112,7 +125,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         // para você durante, especialmente na fase de desenvolvimento
         ex.printStackTrace();
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_USUARIO)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -127,7 +143,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RECURSO_NAO_ENCONTRADA;
         String detail = String.format("O recurso %s, que você tentou acessar, é inexistente." , recurso);
 
-        Problem problem = createProblemBuilder(status, problemType,detail).build();
+        Problem problem = createProblemBuilder(status, problemType,detail)
+                .userMessage("Página inexistente")
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -146,7 +165,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = "O corpo da requisição está inválido. Verifique erro de sintaxe.";
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage("Algum dado apresenta um erro de escrita")
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -159,11 +181,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             body = Problem.builder()
                     .title(status.getReasonPhrase())
                     .status(status.value())
+                    .userMessage(MSG_ERRO_USUARIO)
+                    .timestamp(LocalDateTime.now())
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
                     .title((String) body)
                     .status(status.value())
+                    .userMessage(MSG_ERRO_USUARIO)
+                    .timestamp(LocalDateTime.now())
                     .build();
         }
 
@@ -178,7 +204,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = String.format("A propriedade '%s' não existe. "
                 + "Corrija ou remova essa propriedade e tente novamente.", path);
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_USUARIO)
+                .timestamp(LocalDateTime.now())
+                .build();
 
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -195,7 +224,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         + "que é de um tipo inválido. Corrija e informe um valor compatível com o tipo %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
 
-        Problem problem = createProblemBuilder(status, problemType, detail).build();
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(MSG_ERRO_USUARIO)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
