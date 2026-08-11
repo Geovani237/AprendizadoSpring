@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring;
+package com.algaworks.AprendizadoSpring.core.validation;
 
 public interface Groups {
 

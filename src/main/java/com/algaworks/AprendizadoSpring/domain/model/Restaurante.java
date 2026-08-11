@@ -1,6 +1,6 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
-import com.algaworks.AprendizadoSpring.Groups;
+import com.algaworks.AprendizadoSpring.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
