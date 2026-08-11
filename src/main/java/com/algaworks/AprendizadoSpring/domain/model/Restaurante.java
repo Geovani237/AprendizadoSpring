@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
+import com.algaworks.AprendizadoSpring.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
@@ -27,12 +28,12 @@ public class Restaurante {
 
 //    @NotNull não pode ser null
 //    @NotEmpty não pode ser null nem estar empty
-    @NotBlank
+    @NotBlank(groups = Groups.CadastroRestaurante.class)
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("1")
-    @PositiveOrZero
+    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -40,7 +41,7 @@ public class Restaurante {
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
 //    @JsonIgnore
     @Valid
-    @NotNull
+    @NotNull(groups = Groups.CadastroRestaurante.class)
     @ManyToOne//(fetch = FetchType.LAZY)//Todas as associações ...ToOne usa Eager Loading, que seria um carregamento ansioso/antecipado
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
