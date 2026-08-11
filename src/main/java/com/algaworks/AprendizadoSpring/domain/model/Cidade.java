@@ -1,9 +1,15 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
+import com.algaworks.AprendizadoSpring.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -15,11 +21,15 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
-    //Muitas cidades podem pertencer a um estado
-    @ManyToOne
+
+    @NotNull
+    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
+    @Valid
+    @ManyToOne //Muitas cidades podem pertencer a um estado
     @JoinColumn(nullable = false)
     private Estado estado;
 }
