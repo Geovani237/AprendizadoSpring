@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
 import com.algaworks.AprendizadoSpring.core.validation.Groups;
+import com.algaworks.AprendizadoSpring.core.validation.Multiplo;
 import com.algaworks.AprendizadoSpring.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -36,8 +37,9 @@ public class Restaurante {
 
 //    @DecimalMin("1")
     @NotNull
-//    @PositiveOrZero
-    @TaxaFrete
+    @PositiveOrZero
+//    @TaxaFrete
+//    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
