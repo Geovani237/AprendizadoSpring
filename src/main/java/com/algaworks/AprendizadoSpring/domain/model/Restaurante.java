@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.domain.model;
 import com.algaworks.AprendizadoSpring.core.validation.Groups;
 import com.algaworks.AprendizadoSpring.core.validation.Multiplo;
 import com.algaworks.AprendizadoSpring.core.validation.TaxaFrete;
+import com.algaworks.AprendizadoSpring.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +20,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete",
+        descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
