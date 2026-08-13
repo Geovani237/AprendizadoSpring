@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -13,16 +14,22 @@ import org.springframework.http.HttpStatus;
 class CadastroCozinhaIT {
 
 	@LocalServerPort
-	private int pont;
+	private int port;
+
+	@BeforeEach
+	public void setUp() {
+		//Ajuda a debugar
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+		RestAssured.port = port;
+		RestAssured.basePath = "/cozinhas";
+
+	}
 
 	@Test
 	public void deveRetornarStatus200_QuandoCunsultarCozinhas() {
-		//Ajuda a debugar
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
 		RestAssured.given()
-				.basePath("/cozinhas")
-				.port(pont)
 				.accept(ContentType.JSON)
 			.when()
 				.get()
@@ -33,11 +40,8 @@ class CadastroCozinhaIT {
 	@Test
 	public void deveConter4Cozinhas_QuandoCunsultarCozinhas() {
 		//Ajuda a debugar
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
 		RestAssured.given()
-					.basePath("/cozinhas")
-					.port(pont)
 					.accept(ContentType.JSON)
 				.when()
 					.get()
