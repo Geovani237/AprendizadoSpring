@@ -2,10 +2,8 @@ package com.algaworks.AprendizadoSpring;
 
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,7 @@ import javax.validation.ConstraintViolationException;
 
 
 @SpringBootTest
-class CadastroCozinhaIntegrationTests {
+class CadastroCozinhaIT {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
