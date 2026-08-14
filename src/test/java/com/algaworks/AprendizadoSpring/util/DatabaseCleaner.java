@@ -1,4 +1,4 @@
-package util;
+package com.algaworks.AprendizadoSpring.util;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
