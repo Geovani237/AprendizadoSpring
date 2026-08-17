@@ -2,7 +2,6 @@ package com.algaworks.AprendizadoSpring.domain.service;
 
 import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
@@ -11,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CadastroCidadeService {

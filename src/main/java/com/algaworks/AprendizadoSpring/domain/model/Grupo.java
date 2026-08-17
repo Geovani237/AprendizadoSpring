@@ -2,7 +2,6 @@ package com.algaworks.AprendizadoSpring.domain.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.aspectj.lang.annotation.control.CodeGenerationHint;
 
 import javax.persistence.*;
 import java.util.ArrayList;

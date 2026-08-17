@@ -1,20 +1,15 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 //@Controller
 //@ResponseBody //Indica que as resposta do metodos desse controlador deve ser enviada como resposta da requisição HTTP

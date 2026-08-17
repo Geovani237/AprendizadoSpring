@@ -1,7 +1,6 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.algaworks.AprendizadoSpring.domain.repository.EstadoRepository;

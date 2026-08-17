@@ -1,6 +1,5 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
-import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;

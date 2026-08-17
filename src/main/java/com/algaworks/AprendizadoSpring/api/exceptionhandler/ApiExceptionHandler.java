@@ -4,7 +4,6 @@ import com.algaworks.AprendizadoSpring.core.validation.ValidacaoException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeEmUsoException;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
-import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
