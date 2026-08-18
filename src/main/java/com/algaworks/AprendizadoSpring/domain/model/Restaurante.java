@@ -15,6 +15,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,11 +60,11 @@ public class Restaurante {
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @UpdateTimestamp
     @Column(nullable = false)
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
     @ManyToMany//Toda associações que termina com ...ToMany usa a estratégia Lazy Loading por padrão
     @JoinTable(name = "restaurante_forma_pagamento",
