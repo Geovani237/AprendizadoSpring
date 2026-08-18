@@ -25,12 +25,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-//import org.flywaydb.core.internal.util.ExceptionUtils;
 
 
 // @ControllerAdvice -> Componente interceptor (AOP) do Spring que centraliza
@@ -43,7 +40,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String MSG_ERRO_USUARIO = "Ocorreu um erro interno inesperado no sistema. "
             + "Tente novamente e se o problema persistir, entre em contato "
             + "com o administrador do sistema.";
-
 
     @Autowired
     private MessageSource messageSource;
@@ -59,7 +55,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timestamp(OffsetDateTime.now())
                 .build();
 
 //        Problem problem = Problem.builder()
@@ -82,7 +77,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, ex.getMessage())
                 .userMessage(ex.getMessage())
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
@@ -97,7 +91,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, ex.getMessage())
                 .userMessage(MSG_ERRO_USUARIO)
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
@@ -108,7 +101,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.PARAMENTRO_INVALDO;
-        String type = ex.getRequiredType().getSimpleName();
+//        String type = ex.getRequiredType().getSimpleName();
+        String type = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : null;
         Object exValue = ex.getValue();
         String urlParam = ex.getName();
 
@@ -117,7 +111,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage("O valor informado '" + exValue + "' é inválido")
-                .timestamp(OffsetDateTime.now())
                 .build();
 
 
@@ -129,17 +122,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
-        String detail = MSG_ERRO_USUARIO;
 
         // Importante colocar o printStackTrace (pelo menos por enquanto, que não estamos
         // fazendo logging) para mostrar a stacktrace no console
         // Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes
         // para você durante, especialmente na fase de desenvolvimento
-        ex.printStackTrace();
+        // ex.printStackTrace();
 
-        Problem problem = createProblemBuilder(status, problemType, detail)
+        Problem problem = createProblemBuilder(status, problemType, MSG_ERRO_USUARIO)
                 .userMessage(MSG_ERRO_USUARIO)
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
@@ -198,7 +189,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType,detail)
                 .userMessage("Página inexistente")
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -220,7 +210,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage("Algum dado apresenta um erro de escrita")
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -290,7 +279,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 + "Corrija ou remova essa propriedade e tente novamente.", path);
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(MSG_ERRO_USUARIO)
-                .timestamp(OffsetDateTime.now())
                 .build();
 
 
@@ -310,7 +298,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(MSG_ERRO_USUARIO)
-                .timestamp(OffsetDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -328,7 +315,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
    private static String joinPath(List<JsonMappingException.Reference> ex) {
         return ex.stream()
-                .map(ref -> ref.getFieldName())
+//                .map(ref -> ref.getFieldName())
+                .map(JsonMappingException.Reference::getFieldName)
                 .collect(Collectors.joining("."));
     }
 }
