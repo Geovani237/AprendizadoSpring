@@ -33,13 +33,13 @@ public class Restaurante {
 
 //    @NotNull não pode ser null
 //    @NotEmpty não pode ser null nem estar empty
-    @NotBlank
+//    @NotBlank
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("1")
-    @NotNull
-    @PositiveOrZero
+//    @NotNull
+//    @PositiveOrZero
 //    @TaxaFrete
 //    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
@@ -48,9 +48,9 @@ public class Restaurante {
     //Many restaurantes podem pertencer a One cozinha
 //    @JsonIgnoreProperties("hibernateLazyInitializer")
 //    @JsonIgnore
-    @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
-    @NotNull
+//    @Valid
+//    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+//    @NotNull
     @ManyToOne//(fetch = FetchType.LAZY)//Todas as associações ...ToOne usa Eager Loading, que seria um carregamento ansioso/antecipado
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;

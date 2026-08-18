@@ -2,9 +2,11 @@ package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
 import com.algaworks.AprendizadoSpring.api.model.RestauranteModel;
+import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
 import com.algaworks.AprendizadoSpring.core.validation.ValidacaoException;
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
+import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.RestauranteRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
@@ -57,8 +59,9 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
+            Restaurante restaurante = toDomainObject(restauranteInput);
             return toModel(cadastroRestaurante.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -67,12 +70,15 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}")
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
-                                       @RequestBody @Valid Restaurante restaurante) {
-        Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        BeanUtils.copyProperties(restaurante, restauranteAtual,
-                        "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-
+                                       @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
+            Restaurante restaurante = toDomainObject(restauranteInput);
+
+            Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
+
+            BeanUtils.copyProperties(restaurante, restauranteAtual,
+                    "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+
             return toModel(cadastroRestaurante.salvar(restauranteAtual));
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
@@ -84,13 +90,18 @@ public class RestauranteController {
                                         @RequestBody Map<String, Object> campos, HttpServletRequest request) {
         Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        merge(campos, restauranteAtual, request);
-        validate(restauranteAtual, "restaurante");
+        RestauranteInput restauranteInput = new RestauranteInput();
+        restauranteInput.setNome(restauranteAtual.getNome());
+        restauranteInput.setTaxaFrete(restauranteAtual.getTaxaFrete());
+        restauranteInput.setCozinha(restauranteInput.getCozinha());
 
-        return atualizar(restauranteId, restauranteAtual);
+        merge(campos, restauranteInput, request);
+        validate(restauranteInput, "restaurante");
+
+        return atualizar(restauranteId, restauranteInput);
     }
 
-    private void validate(Restaurante restaurante, String objectName) {
+    private void validate(RestauranteInput restaurante, String objectName) {
         BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
         validator.validate(restaurante, bindingResult);
 
@@ -99,7 +110,7 @@ public class RestauranteController {
         }
     }
 
-    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
+    private static void merge(Map<String, Object> dadosOrigem, RestauranteInput restauranteDestino, HttpServletRequest request) {
 
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
         try {
@@ -142,5 +153,17 @@ public class RestauranteController {
         return restaurantes.stream()
                 .map(restaurante -> toModel(restaurante))
                 .collect(Collectors.toList());
+    }
+
+    private Restaurante toDomainObject(RestauranteInput restauranteInput) {
+        Cozinha cozinha = new Cozinha();
+        cozinha.setId(restauranteInput.getCozinha().getId());;
+
+        Restaurante restaurante = new Restaurante();
+        restaurante.setNome(restauranteInput.getNome());
+        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
+        restaurante.setCozinha(cozinha);
+
+        return restaurante;
     }
 }
