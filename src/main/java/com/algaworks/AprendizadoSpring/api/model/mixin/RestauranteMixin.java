@@ -1,27 +1,20 @@
 package com.algaworks.AprendizadoSpring.api.model.mixin;
 
-import com.algaworks.AprendizadoSpring.core.validation.Groups;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Endereco;
 import com.algaworks.AprendizadoSpring.domain.model.FormaPagamento;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestauranteMixin {
+//Classe mixin são classe onde são colocadas anotações do Jackson de serialização e de desserialização, sem precisar mexer no código fonte da classe original
+public abstract class RestauranteMixin {
 
-
+    // a propriedade allowGetters serve para evitar ou não que seja serializados
     @JsonIgnoreProperties(value = "nome", allowGetters = true)
     private Cozinha cozinha;
 
@@ -35,8 +28,8 @@ public class RestauranteMixin {
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore
-    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+    private List<FormaPagamento> formasPagamento;
 
     @JsonIgnore
-    private List<Produto> produtos = new ArrayList<>();
+    private List<Produto> produtos;
 }

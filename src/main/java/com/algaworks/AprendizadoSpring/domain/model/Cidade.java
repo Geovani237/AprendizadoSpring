@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
 import com.algaworks.AprendizadoSpring.core.validation.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +25,6 @@ public class Cidade {
     @NotBlank
     @Column(nullable = false)
     private String nome;
-
 
     @NotNull
     @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
