@@ -22,13 +22,13 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+//    @NotBlank
     @Column(nullable = false)
     private String nome;
 
-    @NotNull
-    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
-    @Valid
+//    @NotNull
+//    @ConvertGroup(from = Default.class, to = Groups.EstadoId.class)
+//    @Valid
     @ManyToOne //Muitas cidades podem pertencer a um estado
     @JoinColumn(nullable = false)
     private Estado estado;

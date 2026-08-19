@@ -1,5 +1,9 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.assembler.EstadoModelAssembler;
+import com.algaworks.AprendizadoSpring.api.disassembler.EstadoInputDisassembler;
+import com.algaworks.AprendizadoSpring.api.model.EstadoModel;
+import com.algaworks.AprendizadoSpring.api.model.input.EstadoInput;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.algaworks.AprendizadoSpring.domain.repository.EstadoRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroEstadoService;
@@ -21,32 +25,39 @@ public class EstadoController {
     @Autowired
     private CadastroEstadoService cadastroEstado;
 
+    @Autowired
+    private EstadoModelAssembler estadoModelAssembler;
+
+    @Autowired
+    private EstadoInputDisassembler estadoInputDisassembler;
+
     @GetMapping
-    public List<Estado> listar() {
-        return estadoRepository.findAll();
+    public List<EstadoModel> listar() {
+        return estadoModelAssembler.toCollectionModel(estadoRepository.findAll());
     }
 
     @GetMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.OK)
-    public Estado buscar(@PathVariable Long estadoId) {
-        return cadastroEstado.buscarOuFalhar(estadoId);
+    public EstadoModel buscar(@PathVariable Long estadoId) {
+        return estadoModelAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
     }
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody @Valid Estado estado) {
-        return cadastroEstado.salvar(estado);
+    public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+        Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
     @PutMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.OK)
-    public Estado atualizar(@PathVariable Long estadoId,
-                                            @RequestBody @Valid Estado estado) {
+    public EstadoModel atualizar(@PathVariable Long estadoId,
+                                            @RequestBody @Valid EstadoInput estadoInput) {
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
+        estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
+//        BeanUtils.copyProperties(estado, estadoAtual, "id");
 
-        BeanUtils.copyProperties(estado, estadoAtual, "id");
-
-        return cadastroEstado.salvar(estadoAtual);
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));
     }
 
 
