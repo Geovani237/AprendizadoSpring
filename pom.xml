@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<modelmapper.version>3.1.0</modelmapper.version>
 	</properties>
 
 	<dependencies>
@@ -97,6 +98,16 @@
 			<artifactId>rest-assured</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
+		<!-- Model Mapper-->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${modelmapper.version}</version>
+		</dependency>
+
+
 
 	</dependencies>
 
