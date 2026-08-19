@@ -14,16 +14,14 @@ public class RestauranteInputDisassembler {
     private ModelMapper modelMapper;
 
     public Restaurante toDomainObject(RestauranteInput restauranteInput) {
-
         return modelMapper.map(restauranteInput, Restaurante.class);
-//        Cozinha cozinha = new Cozinha();
-//        cozinha.setId(restauranteInput.getCozinha().getId());;
-//
-//        Restaurante restaurante = new Restaurante();
-//        restaurante.setNome(restauranteInput.getNome());
-//        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-//        restaurante.setCozinha(cozinha);
-//
-//        return restaurante;
+    }
+
+    public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
+        // Para evitar [org.springframework.orm.jpa.JpaSystemException: identifier of an instance of
+        // com.algaworks.AprendizadoSpring.domain.model.Cozinha was altered from 1 to 2
+        restaurante.setCozinha(new Cozinha());
+
+        modelMapper.map(restauranteInput, restaurante);
     }
 }
