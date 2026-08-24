@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
 import com.algaworks.AprendizadoSpring.api.model.RestauranteModel;
 import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
 import com.algaworks.AprendizadoSpring.core.validation.ValidacaoException;
+import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
@@ -71,7 +72,7 @@ public class RestauranteController {
         try {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
@@ -90,7 +91,7 @@ public class RestauranteController {
 //                    "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }

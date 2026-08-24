@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
 import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
+import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
@@ -15,19 +16,23 @@ public class CadastroRestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
 
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    private CadastroCidadeService cadastroCidade;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
 
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+        Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
         restaurante.setCozinha(cozinha);
+        restaurante.getEndereco().setCidade(cidade);
 
         return restauranteRepository.save(restaurante);
     }

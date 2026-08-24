@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.disassembler;
 
 import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
+import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -21,7 +22,9 @@ public class RestauranteInputDisassembler {
         // Para evitar [org.springframework.orm.jpa.JpaSystemException: identifier of an instance of
         // com.algaworks.AprendizadoSpring.domain.model.Cozinha was altered from 1 to 2
         restaurante.setCozinha(new Cozinha());
-
+        if (restaurante.getEndereco() != null) {
+            restaurante.getEndereco().setCidade(new Cidade());
+        }
         modelMapper.map(restauranteInput, restaurante);
     }
 }
