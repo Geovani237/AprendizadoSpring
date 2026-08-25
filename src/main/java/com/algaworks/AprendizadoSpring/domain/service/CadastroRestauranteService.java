@@ -1,10 +1,9 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
+import com.algaworks.AprendizadoSpring.api.model.ProdutoModel;
+import com.algaworks.AprendizadoSpring.domain.exception.ProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
-import com.algaworks.AprendizadoSpring.domain.model.Cidade;
-import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
-import com.algaworks.AprendizadoSpring.domain.model.FormaPagamento;
-import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
+import com.algaworks.AprendizadoSpring.domain.model.*;
 import com.algaworks.AprendizadoSpring.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
+
+    @Autowired
+    private CadastroProdutoService cadastroProduto;
 
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
@@ -70,5 +72,16 @@ public class CadastroRestauranteService {
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradaException(restauranteId));
+    }
+
+    public Produto buscarProduto(Long produtoId, Long restauranteId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Produto produto = cadastroProduto.buscarOuFalhar(produtoId);
+
+        if (restaurante.getProdutos().contains(produto)) {
+            return produto;
+        }
+
+        throw new ProdutoNaoEncontradaException(produtoId);
     }
 }
