@@ -12,6 +12,10 @@ public class CadastroProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    public Produto salvar(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
     public Produto buscarOuFalhar(Long produtoId, Long restauranteId) {
         return produtoRepository.findById(produtoId)
                 .orElseThrow(() -> new ProdutoNaoEncontradaException(produtoId, restauranteId));
