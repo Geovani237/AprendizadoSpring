@@ -29,9 +29,6 @@ public class RestauranteController {
     private CadastroRestauranteService cadastroRestaurante;
 
     @Autowired
-    private SmartValidator validator;
-
-    @Autowired
     private RestauranteModelAssembler restauranteModelAssembler;
 
     @Autowired

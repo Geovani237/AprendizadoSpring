@@ -32,20 +32,17 @@ public class GrupoController {
     @Autowired
     private GrupoInputDisassembler grupoInputDissabler;
 
-    //TODO listar
     @GetMapping
     public List<GrupoModel> listar() {
         return grupoModelAssembler.toColletionModel(grupoRepository.findAll());
     }
 
-    //TODO buscar
     @GetMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.OK)
     public GrupoModel buscar(@PathVariable Long grupoId) {
         return grupoModelAssembler.toModel(cadastroGrupo.buscarOuFalhar(grupoId));
     }
 
-    //TODO adicionar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel salvar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -53,7 +50,6 @@ public class GrupoController {
         return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
     }
 
-    //TODO atualizar
     @PutMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.OK)
     public GrupoModel atualizar(@PathVariable Long grupoId,
@@ -70,7 +66,6 @@ public class GrupoController {
         }
     }
 
-    //TODO remover
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {

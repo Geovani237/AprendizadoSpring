@@ -34,20 +34,17 @@ public class UsuarioController {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
-    //TODO listar
     @GetMapping
     public List<UsuarioModel> listar() {
         return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
     }
 
-    //TODO buscar
     @GetMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         return usuarioModelAssembler.toModel(cadastroService.buscarOuFalhar(usuarioId));
     }
 
-    //TODO adicionar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioCadastroInput usuarioInput) {
@@ -56,7 +53,6 @@ public class UsuarioController {
     }
 
 
-    //TODO atualizar
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
@@ -72,7 +68,6 @@ public class UsuarioController {
         }
     }
 
-    //TODO atualizar senha
     @PutMapping("/{usuarioId}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void atualizarSenha(@PathVariable Long usuarioId,

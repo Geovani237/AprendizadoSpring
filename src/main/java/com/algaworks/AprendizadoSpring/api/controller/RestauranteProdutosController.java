@@ -31,13 +31,7 @@ import java.util.List;
 public class RestauranteProdutosController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
-
-    @Autowired
     private CadastroProdutoService cadastroProdutoService;
-
-    @Autowired
-    private CadastroRestauranteService cadastroRestauranteService;
 
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;
