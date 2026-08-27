@@ -48,14 +48,12 @@ public class RestauranteProdutosController {
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
-    //TODO listar
     @GetMapping
     public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         return produtoModelAssembler.toCollectionModel(restaurante.getProdutos());
     }
 
-    //TODO buscar
     @GetMapping("/{produtoId}")
     public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroRestaurante.buscarProduto(produtoId, restauranteId);
@@ -63,7 +61,6 @@ public class RestauranteProdutosController {
         return produtoModelAssembler.toModel(produto);
     }
 
-    //TODO adicionar
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel adicionar(@PathVariable Long restauranteId,
@@ -76,7 +73,6 @@ public class RestauranteProdutosController {
         return produtoModelAssembler.toModel(cadastroProdutoService.salvar(produto));
     }
 
-    //TODO atualizar
     @PutMapping("/{produtoId}")
     public ProdutoModel atualizar(@PathVariable Long restauranteId,
             @RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long produtoId) {

@@ -1,20 +1,12 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
-import com.algaworks.AprendizadoSpring.core.validation.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,6 +54,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.FALSE;
+
     @CreationTimestamp
     @Column(nullable = false)
     private OffsetDateTime dataCadastro;
@@ -78,6 +72,14 @@ public class Restaurante {
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
+    }
 
     public void ativar() {
         setAtivo(true);

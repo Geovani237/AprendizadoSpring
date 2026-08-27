@@ -1,6 +1,5 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
-import com.algaworks.AprendizadoSpring.api.model.ProdutoModel;
 import com.algaworks.AprendizadoSpring.domain.exception.ProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.*;
@@ -39,6 +38,18 @@ public class CadastroRestauranteService {
         restaurante.getEndereco().setCidade(cidade);
 
         return restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void abrir(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long restauranteId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        restaurante.fechar();
     }
 
     @Transactional
