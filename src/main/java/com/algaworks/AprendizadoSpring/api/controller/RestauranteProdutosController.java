@@ -11,6 +11,7 @@ import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
 import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
+import com.algaworks.AprendizadoSpring.domain.exception.ProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.ProdutoRepository;
@@ -76,5 +77,22 @@ public class RestauranteProdutosController {
     }
 
     //TODO atualizar
+    @PutMapping("/{produtoId}")
+    public ProdutoModel atualizar(@PathVariable Long restauranteId,
+            @RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long produtoId) {
+        try {
+            Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+            Produto produtoAtual = cadastroProdutoService.buscarOuFalhar(produtoId, restauranteId);
 
+            produtoInputDisassembler.copyToDomainObject(produtoInput, produtoAtual);
+
+            produtoAtual.setRestaurante(restaurante);
+
+            return produtoModelAssembler.toModel(cadastroProdutoService.salvar(produtoAtual));
+        } catch (ProdutoNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
+
+
+    }
 }
