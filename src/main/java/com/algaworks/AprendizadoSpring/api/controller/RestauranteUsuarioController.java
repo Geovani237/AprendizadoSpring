@@ -5,6 +5,7 @@ import com.algaworks.AprendizadoSpring.api.model.UsuarioModel;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +28,13 @@ public class RestauranteUsuarioController {
     }
 
     @DeleteMapping("/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desasscociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestauranteService.desassociarUsuario(restauranteId, usuarioId);
     }
 
     @PutMapping("/{usuarioId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestauranteService.associarUsuario(restauranteId, usuarioId);
     }
