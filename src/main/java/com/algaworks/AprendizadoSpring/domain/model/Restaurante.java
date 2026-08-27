@@ -73,6 +73,12 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+    joinColumns = @JoinColumn(name = "restaurante_id"),
+    inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> usuarios = new HashSet<>();
+
     public void abrir() {
         setAberto(true);
     }
@@ -97,6 +103,13 @@ public class Restaurante {
         return getFormasPagamento().add(formaPagamento);
     }
 
+    public boolean removerUsuario(Usuario usuario) {
+        return getUsuarios().remove(usuario);
+    }
+
+    public boolean adicionarUsuario(Usuario usuario) {
+        return getUsuarios().add(usuario);
+    }
 
 
 }
