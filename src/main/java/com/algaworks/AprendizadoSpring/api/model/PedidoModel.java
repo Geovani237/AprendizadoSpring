@@ -17,7 +17,7 @@ public class PedidoModel {
     private BigDecimal subtotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
-    private StatusPedido status;
+    private String status;
     private OffsetDateTime dataCriacao;
     private OffsetDateTime dataConfirmacao;
     private OffsetDateTime dataEntrega;
