@@ -1,7 +1,9 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.PedidoModelAssembler;
+import com.algaworks.AprendizadoSpring.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.AprendizadoSpring.api.model.PedidoModel;
+import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import com.algaworks.AprendizadoSpring.domain.repository.PedidoRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroPedidoService;
@@ -23,12 +25,15 @@ public class PedidoController {
     private PedidoModelAssembler pedidoModelAssembler;
 
     @Autowired
+    private PedidoResumoModelAssembler pedidoResumoModelAssembler;
+
+    @Autowired
     private CadastroPedidoService cadastroPedido;
 
     //TODO listar
     @GetMapping
-    public List<PedidoModel> listar() {
-        return pedidoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+    public List<PedidoResumoModel> listar() {
+        return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
     }
 
     //TODO buscar
