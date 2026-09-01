@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos/{pedidoId}")
+@RequestMapping("/pedidos/{codigoPedido}")
 public class FluxoPedidoController {
 
     @Autowired
@@ -29,19 +29,19 @@ public class FluxoPedidoController {
 
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirmar(@PathVariable Long pedidoId) {
-        fluxoPedido.confirmar(pedidoId);
+    public void confirmar(@PathVariable String codigoPedido) {
+        fluxoPedido.confirmar(codigoPedido);
     }
 
     @PutMapping("/entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void entrega(@PathVariable Long pedidoId) {
-        fluxoPedido.entrega(pedidoId);
+    public void entrega(@PathVariable String codigoPedido) {
+        fluxoPedido.entrega(codigoPedido);
     }
 
     @PutMapping("/cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelar(@PathVariable Long pedidoId) {
-        fluxoPedido.cancelar(pedidoId);
+    public void cancelar(@PathVariable String codigoPedido) {
+        fluxoPedido.cancelar(codigoPedido);
     }
 }
