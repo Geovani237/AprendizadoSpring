@@ -31,6 +31,9 @@ import java.util.List;
 public class RestauranteProdutosController {
 
     @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
     private CadastroProdutoService cadastroProdutoService;
 
     @Autowired
@@ -43,9 +46,18 @@ public class RestauranteProdutosController {
     private ProdutoInputDisassembler produtoInputDisassembler;
 
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                     @RequestParam(required = false) boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        return produtoModelAssembler.toCollectionModel(restaurante.getProdutos());
+        List<Produto> todosProdutos;
+
+        if (incluirInativos) {
+            todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
+        } else {
+            todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
+
+        return produtoModelAssembler.toCollectionModel(todosProdutos);
     }
 
     @GetMapping("/{produtoId}")
