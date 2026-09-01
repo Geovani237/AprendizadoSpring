@@ -11,7 +11,7 @@ import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
 import com.algaworks.AprendizadoSpring.domain.repository.PedidoRepository;
-import com.algaworks.AprendizadoSpring.domain.service.EmitirPedidoService;
+import com.algaworks.AprendizadoSpring.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,21 +36,18 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @Autowired
-    private EmitirPedidoService cadastroPedido;
+    private EmissaoPedidoService cadastroPedido;
 
-    //TODO listar
     @GetMapping
     public List<PedidoResumoModel> listar() {
         return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
     }
 
-    //TODO buscar
     @GetMapping("/{pedidoId}")
     public PedidoModel buscar(@PathVariable Long pedidoId) {
         return pedidoModelAssembler.toModel(cadastroPedido.buscarOuFalhar(pedidoId));
     }
 
-    //TODO adicionar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
