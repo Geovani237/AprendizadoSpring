@@ -11,7 +11,9 @@ import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
 import com.algaworks.AprendizadoSpring.domain.repository.PedidoRepository;
+import com.algaworks.AprendizadoSpring.domain.repository.filter.PedidoFilter;
 import com.algaworks.AprendizadoSpring.domain.service.EmissaoPedidoService;
+import com.algaworks.AprendizadoSpring.infrastructure.repository.spec.PedidoSpecs;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -62,8 +64,10 @@ public class PedidoController {
 //    }
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        return pedidoResumoModelAssembler.toCollectionModel(pedidoRepository.findAll());
+    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+        List<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usadoFiltro(filtro));
+
+        return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
     }
 
     @GetMapping("/{codigoId}")
