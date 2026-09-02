@@ -11,8 +11,14 @@ public class PedidoSpecs {
 
     public static Specification<Pedido> usadoFiltro(PedidoFilter filtro) {
             return (root, query, builder) -> {
-                root.fetch("restaurante").fetch("cozinha");
-                root.fetch("cliente");
+//                if (query.getResultType() != Long.class && query.getResultType() != long.class) {
+//                    root.fetch("restaurante").fetch("cozinha");
+//                    root.fetch("cliente");
+//                }
+                if (Pedido.class.equals(query.getResultType())) {
+                    root.fetch("restaurante").fetch("cozinha");
+                    root.fetch("cliente");
+                }
                 var predicates = new ArrayList<Predicate>();
 
                 if (filtro.getClienteId() != null) {
