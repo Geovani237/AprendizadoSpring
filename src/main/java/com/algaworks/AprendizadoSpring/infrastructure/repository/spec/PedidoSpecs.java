@@ -1,7 +1,7 @@
 package com.algaworks.AprendizadoSpring.infrastructure.repository.spec;
 
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
-import com.algaworks.AprendizadoSpring.domain.repository.filter.PedidoFilter;
+import com.algaworks.AprendizadoSpring.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;

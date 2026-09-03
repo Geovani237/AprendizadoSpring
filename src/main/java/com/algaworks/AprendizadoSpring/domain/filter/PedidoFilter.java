@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring.domain.repository.filter;
+package com.algaworks.AprendizadoSpring.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
