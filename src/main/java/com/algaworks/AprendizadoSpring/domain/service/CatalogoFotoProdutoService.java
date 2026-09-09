@@ -1,16 +1,15 @@
 package com.algaworks.AprendizadoSpring.domain.service;
 
+import com.algaworks.AprendizadoSpring.domain.exception.FotoProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.FotoProduto;
 import com.algaworks.AprendizadoSpring.domain.repository.ProdutoRepository;
+import com.algaworks.AprendizadoSpring.domain.service.FotoStorageService.NovaFoto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.algaworks.AprendizadoSpring.domain.service.FotoStorageService.NovaFoto;
-
 
 import java.io.InputStream;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class CatalogoFotoProdutoService {
@@ -52,5 +51,11 @@ public class CatalogoFotoProdutoService {
         fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
 
         return foto;
+    }
+
+
+    public FotoProduto buscarOuFalhar(Long resturanteId, Long produtoId) {
+        return produtoRepository.findFotoById(resturanteId, produtoId)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(produtoId, resturanteId));
     }
 }

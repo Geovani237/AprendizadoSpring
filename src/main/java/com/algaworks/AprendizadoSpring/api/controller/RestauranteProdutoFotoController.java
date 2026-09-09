@@ -7,11 +7,9 @@ import com.algaworks.AprendizadoSpring.domain.model.FotoProduto;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroProdutoService;
 import com.algaworks.AprendizadoSpring.domain.service.CatalogoFotoProdutoService;
+import com.algaworks.AprendizadoSpring.infrastructure.storage.LocalFotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -20,6 +18,10 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
+
+
+    @Autowired
+    private LocalFotoStorageService localFotoStorageService;
 
     @Autowired
     private CadastroProdutoService cadastroProduto;
@@ -48,5 +50,12 @@ public class RestauranteProdutoFotoController {
         FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoSalva);
+    }
+
+    @GetMapping()
+    public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
+
+        return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 }
