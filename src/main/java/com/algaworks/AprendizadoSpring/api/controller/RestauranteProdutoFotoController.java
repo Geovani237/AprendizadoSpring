@@ -12,6 +12,7 @@ import com.algaworks.AprendizadoSpring.domain.service.FotoStorageService;
 import com.algaworks.AprendizadoSpring.infrastructure.storage.LocalFotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -27,9 +28,6 @@ import java.util.List;
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
-
-    @Autowired
-    private LocalFotoStorageService localFotoStorageService;
 
     @Autowired
     private FotoStorageService fotoStorageService;
@@ -93,6 +91,14 @@ public class RestauranteProdutoFotoController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long restauranteId,
+                        @PathVariable Long produtoId) {
+
+        catalogoFotoProduto.excluir(restauranteId, produtoId);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto,
