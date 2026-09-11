@@ -9,7 +9,6 @@ import com.algaworks.AprendizadoSpring.domain.model.Produto;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroProdutoService;
 import com.algaworks.AprendizadoSpring.domain.service.CatalogoFotoProdutoService;
 import com.algaworks.AprendizadoSpring.domain.service.FotoStorageService;
-import com.algaworks.AprendizadoSpring.infrastructure.storage.LocalFotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
