@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring.infrastructure.storage;
+package com.algaworks.AprendizadoSpring.infrastructure.service.storage;
 
 public class StorageException extends RuntimeException{
 

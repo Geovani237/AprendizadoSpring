@@ -125,14 +125,4 @@ public class CadastroRestauranteService {
                 .orElseThrow(() -> new RestauranteNaoEncontradaException(restauranteId));
     }
 
-    public Produto buscarProduto(Long produtoId, Long restauranteId) {
-        Restaurante restaurante = buscarOuFalhar(restauranteId);
-        Produto produto = cadastroProduto.buscarOuFalhar(produtoId, restauranteId);
-
-        if (restaurante.getProdutos().contains(produto)) {
-            return produto;
-        }
-
-        throw new ProdutoNaoEncontradaException(produtoId, restauranteId);
-    }
 }

@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring.infrastructure.service;
+package com.algaworks.AprendizadoSpring.infrastructure.service.query;
 
 import com.algaworks.AprendizadoSpring.domain.filter.VendaDiariaFilter;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
@@ -6,7 +6,6 @@ import com.algaworks.AprendizadoSpring.domain.model.StatusPedido;
 import com.algaworks.AprendizadoSpring.domain.model.dto.VendaDiaria;
 import com.algaworks.AprendizadoSpring.domain.service.VendaQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
