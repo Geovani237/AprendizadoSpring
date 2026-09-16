@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 
-//@Service
+@Service
 public class SmptEnvioEmailService implements EnvioEmailService {
 
     @Autowired
