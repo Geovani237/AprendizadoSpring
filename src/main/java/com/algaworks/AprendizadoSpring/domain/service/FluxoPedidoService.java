@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.domain.service;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import com.algaworks.AprendizadoSpring.domain.model.StatusPedido;
+import com.algaworks.AprendizadoSpring.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,21 +17,23 @@ public class FluxoPedidoService {
     private EmissaoPedidoService emissaoPedido;
 
     @Autowired
-    private EnvioEmailService envioEmail;
+    private PedidoRepository pedidoRepository;
 
     @Transactional
     public void confirmar(String codigoPedido) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
         pedido.confirmar();
 
-        var mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", pedido)
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-
-        envioEmail.enviar(mensagem);
+        pedidoRepository.save(pedido);
+//
+//        var mensagem = EnvioEmailService.Mensagem.builder()
+//                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+//                .corpo("pedido-confirmado.html")
+//                .variavel("pedido", pedido)
+//                .destinatario(pedido.getCliente().getEmail())
+//                .build();
+//
+//        envioEmail.enviar(mensagem);
     }
 
     @Transactional
