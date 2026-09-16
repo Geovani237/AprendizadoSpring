@@ -16,8 +16,12 @@ public class StorageProperties {
     //Representa as propriedades do application.properties
 
     private Local local = new Local();
-
     private S3 s3 = new S3();
+    private TipoStorage tipo = TipoStorage.LOCAL;
+
+    public enum TipoStorage {
+        LOCAL, S3
+    }
 
     @Getter
     @Setter

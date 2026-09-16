@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.net.URL;
 
-@Service
+//@Service
 public class S3FotoStorageService implements FotoStorageService {
 
     @Autowired
