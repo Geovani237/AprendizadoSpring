@@ -25,15 +25,6 @@ public class FluxoPedidoService {
         pedido.confirmar();
 
         pedidoRepository.save(pedido);
-//
-//        var mensagem = EnvioEmailService.Mensagem.builder()
-//                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-//                .corpo("pedido-confirmado.html")
-//                .variavel("pedido", pedido)
-//                .destinatario(pedido.getCliente().getEmail())
-//                .build();
-//
-//        envioEmail.enviar(mensagem);
     }
 
     @Transactional
