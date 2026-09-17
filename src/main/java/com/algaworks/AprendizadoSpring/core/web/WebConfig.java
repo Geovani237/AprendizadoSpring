@@ -14,4 +14,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*");
 //                .maxAge(10);
     }
+
+    /*
+    CORS (Cross-Origin Resource Sharing, ou Compartilhamento de Recursos entre Origens)
+    é um mecanismo de segurança usado pelos navegadores para controlar como um site em um
+    domínio (origem) pode solicitar recursos de um servidor em um domínio diferente.
+
+     */
 }
