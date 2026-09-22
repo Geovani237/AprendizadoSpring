@@ -34,6 +34,9 @@ public class SpringFoxConfig {
                 .build()
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponseMessages())
+                .globalResponses(HttpMethod.POST, globalPostResponseMessages())
+                .globalResponses(HttpMethod.PUT, globalPutResponseMessages())
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"));
     }
@@ -57,6 +60,62 @@ public class SpringFoxConfig {
                 new ResponseBuilder()
                         .code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
                         .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .build()
+        );
+    }
+
+    private List<Response> globalPostResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+                        .description("Requisição inválida")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                        .description("Erro interno do Servidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .build()
+        );
+    }
+
+    private List<Response> globalPutResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+                        .description("Requisição inválida")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                        .description("Erro interno do Servidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+                        .description("Recurso não possui representação que pode ser aceita pelo consumidor")
+                        .build()
+        );
+    }
+
+
+    private List<Response> globalDeleteResponseMessages() {
+        return Arrays.asList(
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+                        .description("Requisição inválida")
+                        .build(),
+                new ResponseBuilder()
+                        .code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+                        .description("Erro interno do Servidor")
                         .build()
         );
     }
