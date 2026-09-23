@@ -2,6 +2,7 @@ package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.CidadeModelAssembler;
 import com.algaworks.AprendizadoSpring.api.disassembler.CidadeInputDisassembler;
+import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.model.input.CidadeInput;
 import com.algaworks.AprendizadoSpring.domain.exception.EstadoNaoEncontradaException;
@@ -9,9 +10,7 @@ import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCidadeService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +36,19 @@ public class CidadeController {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @ApiOperation("Lista as cidades")
+    @GetMapping
+    public List<CidadeModel> listar() {
+        List<Cidade> todasCidades = cidadeRepository.findAll();
+
+        return cidadeModelAssembler.toCollectionsModel(todasCidades);
+    }
+
     @ApiOperation("Busca uma cidade por ID")
+    @ApiResponses({
+            @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
+            @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
+    })
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(
             @ApiParam(value = "ID de uma cidade", example = "1")
@@ -48,6 +59,9 @@ public class CidadeController {
     }
 
     @ApiOperation("Cadastra uma cidade")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Cidade cadastrada"),
+    })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(
@@ -65,6 +79,10 @@ public class CidadeController {
     }
 
     @ApiOperation("Atualiza uma cidade por ID")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cidade atualizada"),
+            @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
+    })
     @PutMapping("/{cidadeId}")
     public CidadeModel atualizar(
             @ApiParam(value = "ID de uma cidade", example = "1")
@@ -86,6 +104,10 @@ public class CidadeController {
     }
 
     @ApiOperation("Exclui uma cidade por ID")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Cidade excluída"),
+            @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
+    })
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(
