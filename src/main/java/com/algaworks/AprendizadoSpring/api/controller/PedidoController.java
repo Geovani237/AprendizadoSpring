@@ -16,6 +16,8 @@ import com.algaworks.AprendizadoSpring.domain.filter.PedidoFilter;
 import com.algaworks.AprendizadoSpring.domain.service.EmissaoPedidoService;
 import com.algaworks.AprendizadoSpring.infrastructure.repository.spec.PedidoSpecs;
 import com.google.common.collect.ImmutableMap;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -65,6 +67,10 @@ public class PedidoController {
 //        return pedidosWrapper;
 //    }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+            name = "campos", paramType = "query", type = "string")
+    })
     @GetMapping
     public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
@@ -76,6 +82,10 @@ public class PedidoController {
         return new PageImpl<>(pedidosResumoModel, pageable, todosPedidos.getTotalPages());
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+                    name = "campos", paramType = "query", type = "string")
+    })
     @GetMapping("/{codigoId}")
     public PedidoModel buscar(@PathVariable String codigoId) {
         return pedidoModelAssembler.toModel(cadastroPedido.buscarOuFalhar(codigoId));
