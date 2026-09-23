@@ -2,17 +2,19 @@ package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.UsuarioModelAssembler;
 import com.algaworks.AprendizadoSpring.api.model.UsuarioModel;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/responsaveis")
-public class RestauranteUsuarioController {
+public class RestauranteUsuarioController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
@@ -33,7 +35,7 @@ public class RestauranteUsuarioController {
         cadastroRestauranteService.desassociarUsuario(restauranteId, usuarioId);
     }
 
-    @PutMapping("/{usuarioId}")
+    @PutMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         cadastroRestauranteService.associarUsuario(restauranteId, usuarioId);

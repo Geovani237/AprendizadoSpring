@@ -2,17 +2,19 @@ package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.PermissaoModelAssembler;
 import com.algaworks.AprendizadoSpring.api.model.PermissaoModel;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.model.Grupo;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/grupos/{grupoId}/permissoes")
-public class GrupoPermissaoController {
+public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi {
 
     @Autowired
     private PermissaoModelAssembler permissaoModelAssembler;
@@ -27,7 +29,7 @@ public class GrupoPermissaoController {
         return permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
     }
 
-    @PutMapping("/{permissaoId}")
+    @PutMapping(value = "/{permissaoId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associar(@PathVariable Long permissaoId, @PathVariable Long grupoId) {
         cadastroGrupoService.associarPermissao(permissaoId, grupoId);

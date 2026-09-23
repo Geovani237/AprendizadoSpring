@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.assembler.EstadoModelAssembler;
 import com.algaworks.AprendizadoSpring.api.disassembler.EstadoInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.EstadoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.EstadoInput;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import com.algaworks.AprendizadoSpring.domain.repository.EstadoRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroEstadoService;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/estados")
-public class EstadoController {
+public class EstadoController implements EstadoControllerOpenApi {
 
     @Autowired
     private EstadoRepository estadoRepository;

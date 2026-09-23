@@ -8,6 +8,7 @@ import com.algaworks.AprendizadoSpring.api.model.ProdutoModel;
 import com.algaworks.AprendizadoSpring.api.model.RestauranteModel;
 import com.algaworks.AprendizadoSpring.api.model.input.ProdutoInput;
 import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
@@ -20,6 +21,7 @@ import com.algaworks.AprendizadoSpring.domain.service.CadastroProdutoService;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +30,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutosController {
+public class RestauranteProdutosController implements RestauranteProdutoControllerOpenApi {
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -60,13 +62,13 @@ public class RestauranteProdutosController {
         return produtoModelAssembler.toCollectionModel(todosProdutos);
     }
 
-    @GetMapping("/{produtoId}")
+    @GetMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProdutoService.buscarOuFalhar(produtoId, restauranteId);
         return produtoModelAssembler.toModel(produto);
     }
 
-    @PostMapping()
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel adicionar(@PathVariable Long restauranteId,
             @RequestBody @Valid ProdutoInput produtoInput) {
@@ -78,9 +80,9 @@ public class RestauranteProdutosController {
         return produtoModelAssembler.toModel(cadastroProdutoService.salvar(produto));
     }
 
-    @PutMapping("/{produtoId}")
+    @PutMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoModel atualizar(@PathVariable Long restauranteId,
-            @RequestBody @Valid ProdutoInput produtoInput, @PathVariable Long produtoId) {
+            @PathVariable Long produtoId, @RequestBody @Valid ProdutoInput produtoInput) {
         try {
             Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
             Produto produtoAtual = cadastroProdutoService.buscarOuFalhar(produtoId, restauranteId);

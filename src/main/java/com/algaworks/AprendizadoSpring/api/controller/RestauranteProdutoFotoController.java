@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.api.controller;
 import com.algaworks.AprendizadoSpring.api.assembler.FotoProdutoModelAssembler;
 import com.algaworks.AprendizadoSpring.api.model.FotoProdutoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.FotoProdutoInput;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.FotoProduto;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauranteProdutoFotoController {
+public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenApi {
 
 
     @Autowired
@@ -41,7 +42,7 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProduto;
 
-    @PutMapping()
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
                                           @PathVariable Long produtoId,
                                           @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
@@ -61,7 +62,7 @@ public class RestauranteProdutoFotoController {
         return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 
@@ -69,8 +70,8 @@ public class RestauranteProdutoFotoController {
     }
 
 
-    @GetMapping
-    public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
+    @GetMapping(produces = MediaType.ALL_VALUE)
+    public ResponseEntity<?> servir(@PathVariable Long restauranteId,
                                                           @PathVariable Long produtoId,
                                                           @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
@@ -103,7 +104,7 @@ public class RestauranteProdutoFotoController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long restauranteId,
+    public void excluir(@PathVariable Long restauranteId,
                         @PathVariable Long produtoId) {
 
         catalogoFotoProduto.excluir(restauranteId, produtoId);

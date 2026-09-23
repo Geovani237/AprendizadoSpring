@@ -3,9 +3,10 @@ package com.algaworks.AprendizadoSpring.api.controller;
 import com.algaworks.AprendizadoSpring.api.assembler.UsuarioModelAssembler;
 import com.algaworks.AprendizadoSpring.api.disassembler.UsuarioInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.UsuarioModel;
+import com.algaworks.AprendizadoSpring.api.model.input.SenhaInput;
 import com.algaworks.AprendizadoSpring.api.model.input.UsuarioAtualizaInput;
-import com.algaworks.AprendizadoSpring.api.model.input.UsuarioAtualizaSenhaInput;
-import com.algaworks.AprendizadoSpring.api.model.input.UsuarioCadastroInput;
+import com.algaworks.AprendizadoSpring.api.model.input.UsuarioComSenhaInput;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.UsuarioControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.exception.UsuarioNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
@@ -13,6 +14,7 @@ import com.algaworks.AprendizadoSpring.domain.repository.UsuarioRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerOpenApi {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -39,21 +41,21 @@ public class UsuarioController {
         return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
     }
 
-    @GetMapping("/{usuarioId}")
+    @GetMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         return usuarioModelAssembler.toModel(cadastroService.buscarOuFalhar(usuarioId));
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioModel adicionar(@RequestBody @Valid UsuarioCadastroInput usuarioInput) {
+    public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
         Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
         return usuarioModelAssembler.toModel(cadastroService.salvar(usuario));
     }
 
 
-    @PutMapping("/{usuarioId}")
+    @PutMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
         @RequestBody @Valid UsuarioAtualizaInput usuarioAtualizaInput) {
@@ -68,10 +70,10 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{usuarioId}/senha")
+    @PutMapping(value = "/{usuarioId}/senha", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void atualizarSenha(@PathVariable Long usuarioId,
-        @RequestBody @Valid UsuarioAtualizaSenhaInput senha){
+    public void alterarSenha(@PathVariable Long usuarioId,
+        @RequestBody @Valid SenhaInput senha){
         cadastroService.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
     }
 }
