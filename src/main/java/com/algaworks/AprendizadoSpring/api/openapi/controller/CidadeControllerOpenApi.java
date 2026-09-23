@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring.api.controller.openapi;
+package com.algaworks.AprendizadoSpring.api.openapi.controller;
 
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;

@@ -1,7 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.CidadeModelAssembler;
-import com.algaworks.AprendizadoSpring.api.controller.openapi.CidadeControllerOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.AprendizadoSpring.api.disassembler.CidadeInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.model.input.CidadeInput;

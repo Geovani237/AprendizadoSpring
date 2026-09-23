@@ -1,16 +1,10 @@
-package com.algaworks.AprendizadoSpring.api.controller.openapi;
+package com.algaworks.AprendizadoSpring.api.openapi.controller;
 
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.GrupoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.GrupoInput;
-import com.algaworks.AprendizadoSpring.domain.exception.GrupoNaoEncontradaException;
-import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
-import com.algaworks.AprendizadoSpring.domain.model.Grupo;
 import io.swagger.annotations.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Api(tags = "Grupos")

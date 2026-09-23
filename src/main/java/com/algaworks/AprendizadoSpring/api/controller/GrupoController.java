@@ -1,7 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.GrupoModelAssembler;
-import com.algaworks.AprendizadoSpring.api.controller.openapi.GrupoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.GrupoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.api.disassembler.GrupoInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.GrupoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.GrupoInput;

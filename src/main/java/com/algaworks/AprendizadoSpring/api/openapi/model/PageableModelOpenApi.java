@@ -1,4 +1,4 @@
-package com.algaworks.AprendizadoSpring.core.openapi.model;
+package com.algaworks.AprendizadoSpring.api.openapi.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
