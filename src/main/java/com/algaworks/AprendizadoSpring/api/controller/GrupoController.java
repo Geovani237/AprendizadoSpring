@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
 import com.algaworks.AprendizadoSpring.api.assembler.GrupoModelAssembler;
+import com.algaworks.AprendizadoSpring.api.controller.openapi.GrupoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.api.disassembler.GrupoInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.GrupoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.GrupoInput;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenApi {
 
     @Autowired
     private CadastroGrupoService cadastroGrupo;
