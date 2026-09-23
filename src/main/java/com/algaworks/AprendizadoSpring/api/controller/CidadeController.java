@@ -12,6 +12,7 @@ import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,14 +34,14 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CidadeModel> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
 
         return cidadeModelAssembler.toCollectionsModel(todasCidades);
     }
 
-    @GetMapping("/{cidadeId}")
+    @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
@@ -48,7 +49,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
@@ -63,7 +64,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     }
 
 
-    @PutMapping("/{cidadeId}")
+    @PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel atualizar(@PathVariable Long cidadeId,
             @RequestBody @Valid CidadeInput cidadeInput) {
         try {

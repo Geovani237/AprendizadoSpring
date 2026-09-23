@@ -12,13 +12,14 @@ import com.algaworks.AprendizadoSpring.domain.repository.GrupoRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping(path = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GrupoController implements GrupoControllerOpenApi {
 
     @Autowired
@@ -33,25 +34,25 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private GrupoInputDisassembler grupoInputDissabler;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<GrupoModel> listar() {
         return grupoModelAssembler.toColletionModel(grupoRepository.findAll());
     }
 
-    @GetMapping("/{grupoId}")
+    @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public GrupoModel buscar(@PathVariable Long grupoId) {
         return grupoModelAssembler.toModel(cadastroGrupo.buscarOuFalhar(grupoId));
     }
 
-    @PostMapping
+    @PostMapping(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel salvar(@RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoInputDissabler.toDomainObject(grupoInput);
         return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
     }
 
-    @PutMapping("/{grupoId}")
+    @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public GrupoModel atualizar(@PathVariable Long grupoId,
         @RequestBody @Valid GrupoInput grupoInput) {
