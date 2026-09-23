@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.ResourceUriHelper;
 import com.algaworks.AprendizadoSpring.api.assembler.CidadeModelAssembler;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.CidadeControllerOpenApi;
 import com.algaworks.AprendizadoSpring.api.disassembler.CidadeInputDisassembler;
@@ -11,11 +12,18 @@ import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.support.RequestContext;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -57,7 +65,19 @@ public class CidadeController implements CidadeControllerOpenApi {
 
             cidade = cadastroCidade.salvar(cidade);
 
-            return cidadeModelAssembler.toModel(cidade);
+            CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+
+//            URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+//                    .path("/{id}")
+//                    .buildAndExpand(cidadeModel.getId()).toUri();
+//
+//            HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+//
+//            response.setHeader(HttpHeaders.LOCATION, uri.toString());
+
+            ResourceUriHelper.addUriInResponseHeader(cidadeModel.getId());
+
+            return cidadeModel;
         } catch (EstadoNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
