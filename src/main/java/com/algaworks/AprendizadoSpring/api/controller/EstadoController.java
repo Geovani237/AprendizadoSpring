@@ -10,6 +10,7 @@ import com.algaworks.AprendizadoSpring.domain.service.CadastroEstadoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,25 +32,25 @@ public class EstadoController {
     @Autowired
     private EstadoInputDisassembler estadoInputDisassembler;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EstadoModel> listar() {
         return estadoModelAssembler.toCollectionModel(estadoRepository.findAll());
     }
 
-    @GetMapping("/{estadoId}")
+    @GetMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public EstadoModel buscar(@PathVariable Long estadoId) {
         return estadoModelAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
     }
 
-    @PostMapping()
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
         Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
-    @PutMapping("/{estadoId}")
+    @PutMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public EstadoModel atualizar(@PathVariable Long estadoId,
                                             @RequestBody @Valid EstadoInput estadoInput) {
