@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class PageableModelOpenApi {
 
-    @ApiModelProperty(example = "0", value = "Número da página (começaem 0)")
+    @ApiModelProperty(example = "0", value = "Número da página (começam 0)")
     private int page;
 
     @ApiModelProperty(example = "10", value = "Quantidade de elementos por página")
