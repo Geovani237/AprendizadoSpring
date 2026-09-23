@@ -5,21 +5,18 @@ import com.algaworks.AprendizadoSpring.api.disassembler.RestauranteInputDisassem
 import com.algaworks.AprendizadoSpring.api.model.RestauranteModel;
 import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
 import com.algaworks.AprendizadoSpring.api.model.view.RestauranteView;
-import com.algaworks.AprendizadoSpring.api.openapi.model.RestauranteBasicoModelOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
+import com.algaworks.AprendizadoSpring.domain.exception.RestauranteNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.RestauranteRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.validation.SmartValidator;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes")
-public class RestauranteController {
+public class RestauranteController implements RestauranteControllerOpenApi{
 
     @Autowired
     private RestauranteRepository restauranteRepository;
@@ -41,97 +38,48 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
-    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
-            name = "projecao", paramType = "query", type = "string")
-    })
     @JsonView(RestauranteView.Resumo.class)
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RestauranteModel> listar() {
         return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
     }
 
-    @ApiOperation(value = "Lista restaurantes", hidden = true)
     @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
-    public List<RestauranteModel> listarResumido() {
+    public List<RestauranteModel> listarApenasNomes() {
         return listar();
     }
 
-
-//    @GetMappingd
-//    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-//        List<Restaurante> restaurantes = restauranteRepository.findAll();
-//        List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
-//
-//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
-//
-//        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-//
-//        if ("apenas-nome".equals(projecao)) {
-//            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
-//        } else if ("completo".equals(projecao)) {
-//            restaurantesWrapper.setSerializationView(null);
-//        }
-//
-//        return restaurantesWrapper;
-//    }
-
-
-//    @GetMapping
-//    public List<RestauranteModel> listar() {
-//        return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
-//    }
-//
-//    @JsonView(RestauranteView.Resumo.class)
-//    @GetMapping(params = "projecao=resumo")
-//    public List<RestauranteModel> listarResumido() {
-//        return listar();
-//    }
-//
-//    @JsonView(RestauranteView.ApenasNome.class)
-//    @GetMapping(params = "projecao=apenas-nome")
-//    public List<RestauranteModel> listarApenasNomes() {
-//        return listar();
-//    }
-
-
-    @GetMapping("/{restauranteId}")
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
         return restauranteModelAssembler.toModel(restaurante);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
         try {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage(), e);
+            throw new NegocioException(e.getMessage());
         }
     }
 
-    @PutMapping("/{restauranteId}")
+    @PutMapping(value = "/{restauranteId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
-                                       @RequestBody @Valid RestauranteInput restauranteInput) {
+                                      @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-//            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
             restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
 
-//            BeanUtils.copyProperties(restaurante, restauranteAtual,
-//                    "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
-
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
         } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage(), e);
+            throw new NegocioException(e.getMessage());
         }
     }
 
@@ -150,13 +98,21 @@ public class RestauranteController {
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
-        cadastroRestaurante.ativar(restauranteIds);
+        try {
+            cadastroRestaurante.ativar(restauranteIds);
+        } catch (RestauranteNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @DeleteMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
-        cadastroRestaurante.inativar(restauranteIds);
+        try {
+            cadastroRestaurante.inativar(restauranteIds);
+        } catch (RestauranteNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{restauranteId}/abertura")

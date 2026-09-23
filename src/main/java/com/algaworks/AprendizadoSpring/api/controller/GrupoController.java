@@ -47,7 +47,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 
     @PostMapping(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public GrupoModel salvar(@RequestBody @Valid GrupoInput grupoInput) {
+    public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoInputDissabler.toDomainObject(grupoInput);
         return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
     }
