@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.disassembler.PedidoInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.PedidoModel;
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.PedidoInput;
+import com.algaworks.AprendizadoSpring.api.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.core.data.PageableTranslator;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,7 +33,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pedidos")
-public class PedidoController {
+public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -67,11 +69,7 @@ public class PedidoController {
 //        return pedidosWrapper;
 //    }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-            name = "campos", paramType = "query", type = "string")
-    })
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
 
@@ -82,16 +80,12 @@ public class PedidoController {
         return new PageImpl<>(pedidosResumoModel, pageable, todosPedidos.getTotalPages());
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-                    name = "campos", paramType = "query", type = "string")
-    })
-    @GetMapping("/{codigoId}")
+    @GetMapping(path = "/{codigoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PedidoModel buscar(@PathVariable String codigoId) {
         return pedidoModelAssembler.toModel(cadastroPedido.buscarOuFalhar(codigoId));
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
 

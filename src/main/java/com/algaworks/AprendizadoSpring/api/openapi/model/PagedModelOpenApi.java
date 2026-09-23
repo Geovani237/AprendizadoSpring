@@ -1,6 +1,5 @@
 package com.algaworks.AprendizadoSpring.api.openapi.model;
 
-import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PageModelOpenApi<T> {
+public class PagedModelOpenApi<T> {
 
     private List<T> content;
 
