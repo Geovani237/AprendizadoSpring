@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteUsuario
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioResponsav
     private UsuarioModelAssembler usuarioModelAssembler;
 
     @GetMapping()
-    public List<UsuarioModel> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios());

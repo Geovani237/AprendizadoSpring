@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.api.openapi.controller;
 import com.algaworks.AprendizadoSpring.api.model.UsuarioModel;
 import io.swagger.annotations.*;
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    List<UsuarioModel> listar(
+    CollectionModel<UsuarioModel> listar(
             @ApiParam(value = "ID do restaurante", example = "1", required = true)
             Long restauranteId);
 

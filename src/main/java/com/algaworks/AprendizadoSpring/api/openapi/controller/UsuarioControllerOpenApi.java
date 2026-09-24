@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.model.input.UsuarioAtualizaInput;
 import com.algaworks.AprendizadoSpring.api.model.input.UsuarioComSenhaInput;
 import io.swagger.annotations.*;
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface UsuarioControllerOpenApi {
 
     @ApiOperation("Lista os usuários")
-    List<UsuarioModel> listar();
+    CollectionModel<UsuarioModel> listar();
 
     @ApiOperation("Busca um usuário por ID")
     @ApiResponses({
