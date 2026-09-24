@@ -7,6 +7,7 @@ import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,9 @@ public class RestauranteUsuarioController implements RestauranteUsuarioResponsav
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
-        return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios());
+        return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
+                .removeLinks()
+                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioController.class).listar(restauranteId)).withSelfRel());
     }
 
     @DeleteMapping("/{usuarioId}")
