@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.model.EstadoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.EstadoInput;
 import io.swagger.annotations.*;
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface EstadoControllerOpenApi {
 
     @ApiOperation("Lista os estados")
-    List<EstadoModel> listar();
+    CollectionModel<EstadoModel> listar();
 
     @ApiOperation("Busca um estado por ID")
     @ApiResponses({
