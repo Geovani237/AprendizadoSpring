@@ -7,6 +7,7 @@ import com.algaworks.AprendizadoSpring.api.model.PedidoModel;
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.PedidoInput;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.PedidoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.data.PageWrapper;
 import com.algaworks.AprendizadoSpring.core.data.PageableTranslator;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
@@ -76,10 +77,12 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
-        pageable = traduzirPageable(pageable);
+       Pageable pageableTraduzido =  pageable = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = pedidoRepository.findAll(
-                PedidoSpecs.usandoFiltro(filtro), pageable);
+                PedidoSpecs.usandoFiltro(filtro), pageableTraduzido);
+
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
