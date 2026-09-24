@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.model.input.CidadeInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface CidadeControllerOpenApi {
 
 
     @ApiOperation("Lista as cidades")
-    List<CidadeModel> listar();
+    CollectionModel<CidadeModel> listar();
 
     @ApiOperation("Busca uma cidade por ID")
     @ApiResponses({

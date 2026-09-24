@@ -12,6 +12,7 @@ import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.repository.CidadeRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -38,10 +39,30 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CidadeModel> listar() {
+    public CollectionModel<CidadeModel> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
 
-        return cidadeModelAssembler.toCollectionsModel(todasCidades);
+        List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionsModel(todasCidades);
+
+        cidadesModel.forEach(cidadeModel -> {
+            cidadeModel.add(WebMvcLinkBuilder.linkTo(
+                    WebMvcLinkBuilder.methodOn(CidadeController.class)
+                            .buscar(cidadeModel.getId())).withSelfRel());
+
+            cidadeModel.add(WebMvcLinkBuilder.linkTo(
+                    WebMvcLinkBuilder.methodOn(CidadeController.class)
+                            .listar()).withRel("cidades"));
+
+            cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(
+                    WebMvcLinkBuilder.methodOn(EstadoController.class)
+                            .buscar(cidadeModel.getEstado().getId())).withSelfRel());
+        });
+
+        CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
+
+        cidadesCollectionModel.add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
+
+        return cidadesCollectionModel;
     }
 
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
