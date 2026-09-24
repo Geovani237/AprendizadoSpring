@@ -30,9 +30,6 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 
     public UsuarioModel toModel(Usuario usuario) {
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
-
-//        GrupoModel grupoModel = createModelWithId(usuarioModel.getId(), usuario);
-
         modelMapper.map(usuario, usuarioModel);
 
         usuarioModel.add(WebMvcLinkBuilder.linkTo(
@@ -52,9 +49,4 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
                 .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withSelfRel());
     }
 
-    //    public List<UsuarioModel> toCollectionModel(Collection<Usuario> usuarios) {
-//        return usuarios.stream()
-//                .map(usuario -> toModel(usuario))
-//                .collect(Collectors.toList());
-//    }
 }
