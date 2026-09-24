@@ -9,7 +9,7 @@ import javax.persistence.criteria.Predicate;
 
 public class PedidoSpecs {
 
-    public static Specification<Pedido> usadoFiltro(PedidoFilter filtro) {
+    public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
             return (root, query, builder) -> {
 //                if (query.getResultType() != Long.class && query.getResultType() != long.class) {
 //                    root.fetch("restaurante").fetch("cozinha");

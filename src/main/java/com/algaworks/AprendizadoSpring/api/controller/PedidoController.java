@@ -24,6 +24,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,9 @@ public class PedidoController implements PedidoControllerOpenApi {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @Autowired
+    private PagedResourcesAssembler pagedResourcesAssembler;
+
+    @Autowired
     private EmissaoPedidoService cadastroPedido;
 
 //    @GetMapping
@@ -70,14 +75,13 @@ public class PedidoController implements PedidoControllerOpenApi {
 //    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
+    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
 
-        Page<Pedido> todosPedidos = pedidoRepository.findAll(PedidoSpecs.usadoFiltro(filtro), pageable);
+        Page<Pedido> pedidosPage = pedidoRepository.findAll(
+                PedidoSpecs.usandoFiltro(filtro), pageable);
 
-        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler.toCollectionModel(todosPedidos.getContent());
-
-        return new PageImpl<>(pedidosResumoModel, pageable, todosPedidos.getTotalPages());
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
     @GetMapping(path = "/{codigoId}", produces = MediaType.APPLICATION_JSON_VALUE)

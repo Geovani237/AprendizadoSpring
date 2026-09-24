@@ -1,23 +1,46 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.controller.EstadoController;
+import com.algaworks.AprendizadoSpring.api.controller.PedidoController;
+import com.algaworks.AprendizadoSpring.api.controller.RestauranteController;
+import com.algaworks.AprendizadoSpring.api.controller.UsuarioController;
 import com.algaworks.AprendizadoSpring.api.model.PedidoModel;
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class PedidoResumoModelAssembler {
+public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoResumoModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
+    public PedidoResumoModelAssembler() {
+        super(PedidoController.class, PedidoResumoModel.class);
+    }
+
     public PedidoResumoModel toModel(Pedido pedido) {
-         return modelMapper.map(pedido, PedidoResumoModel.class);
+        PedidoResumoModel pedidoResumoModel = createModelWithId(pedido.getCodigo(), pedido);
+        modelMapper.map(pedido, pedidoResumoModel);
+
+        pedidoResumoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
+
+        pedidoResumoModel.getRestaurante().add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(RestauranteController.class)
+                        .buscar(pedidoResumoModel.getRestaurante().getId())).withSelfRel());
+
+        pedidoResumoModel.getCliente().add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(UsuarioController.class)
+                .buscar(pedido.getCliente().getId())).withSelfRel());
+
+         return pedidoResumoModel;
     }
 
     public List<PedidoResumoModel> toCollectionModel(List<Pedido> pedidos) {
