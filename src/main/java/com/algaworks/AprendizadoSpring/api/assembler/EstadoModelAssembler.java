@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.CidadeController;
 import com.algaworks.AprendizadoSpring.api.controller.EstadoController;
 import com.algaworks.AprendizadoSpring.api.model.EstadoModel;
@@ -20,6 +21,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
@@ -29,9 +33,7 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(EstadoController.class)
-                        .listar()).withRel("estados"));
+        estadoModel.add(algaLinks.linkToEstado("estados"));
 
         return estadoModel;
     }

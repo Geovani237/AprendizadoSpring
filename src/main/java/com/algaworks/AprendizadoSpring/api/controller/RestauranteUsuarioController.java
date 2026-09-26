@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.assembler.UsuarioModelAssembler;
 import com.algaworks.AprendizadoSpring.api.model.UsuarioModel;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
@@ -24,13 +25,16 @@ public class RestauranteUsuarioController implements RestauranteUsuarioResponsav
     @Autowired
     private UsuarioModelAssembler usuarioModelAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @GetMapping()
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
                 .removeLinks()
-                .add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(RestauranteUsuarioController.class).listar(restauranteId)).withSelfRel());
+                .add(algaLinks.linkToListarRestaurantes(restauranteId));
     }
 
     @DeleteMapping("/{usuarioId}")

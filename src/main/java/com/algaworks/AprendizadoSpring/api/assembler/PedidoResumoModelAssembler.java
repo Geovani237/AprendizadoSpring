@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.EstadoController;
 import com.algaworks.AprendizadoSpring.api.controller.PedidoController;
 import com.algaworks.AprendizadoSpring.api.controller.RestauranteController;
@@ -22,6 +23,9 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public PedidoResumoModelAssembler() {
         super(PedidoController.class, PedidoResumoModel.class);
     }
@@ -30,15 +34,12 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
         PedidoResumoModel pedidoResumoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoResumoModel);
 
-        pedidoResumoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
+        pedidoResumoModel.add(algaLinks.linkToPedidosResumoModel());
 
-        pedidoResumoModel.getRestaurante().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(RestauranteController.class)
-                        .buscar(pedidoResumoModel.getRestaurante().getId())).withSelfRel());
+        pedidoResumoModel.getRestaurante().add(
+                algaLinks.linkToRestaurantes(pedido.getRestaurante().getId()));
 
-        pedidoResumoModel.getCliente().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoResumoModel.getCliente().add(algaLinks.linkToCliente(pedido.getCliente().getId()));
 
          return pedidoResumoModel;
     }

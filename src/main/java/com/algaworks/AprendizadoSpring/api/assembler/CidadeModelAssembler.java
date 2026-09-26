@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.CidadeController;
 import com.algaworks.AprendizadoSpring.api.controller.EstadoController;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
@@ -17,6 +18,9 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public CidadeModelAssembler() {
         super(CidadeController.class, CidadeModel.class);
     }
@@ -28,14 +32,12 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
         modelMapper.map(cidade, cidadeModel);
 
 
-        cidadeModel.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(CidadeController.class)
-                        .listar()).withRel("cidades"));
+        cidadeModel.add(
+                algaLinks.linkToListarCidade("cidades"));
 
 
-        cidadeModel.getEstado().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(EstadoController.class)
-                        .buscar(cidadeModel.getEstado().getId())).withSelfRel());
+        cidadeModel.getEstado().add(
+                algaLinks.linkToEstado(cidade.getEstado().getId()));
 
         return cidadeModel;
     }

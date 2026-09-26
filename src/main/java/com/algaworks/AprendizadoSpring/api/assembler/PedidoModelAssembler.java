@@ -45,28 +45,21 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
 //        pedidoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
 
-        pedidoModel.getRestaurante().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(RestauranteController.class)
-                        .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoModel.getRestaurante().add(
+                algaLinks.linkToRestaurantes(pedido.getRestaurante().getId()));
 
-        pedidoModel.getCliente().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(UsuarioController.class)
-                        .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoModel.getCliente().add(
+                algaLinks.linkToCliente(pedido.getCliente().getId()));
 
-        pedidoModel.getFormaPagamento().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(FormaPagamentoController.class)
-                        .buscar(pedido.getFormaPagamento().getId(), null)).withSelfRel());
+        pedidoModel.getFormaPagamento().add(
+                algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 
-//        pedidoModel.getFormaPagamento().add(WebMvcLinkBuilder.linkTo(FormaPagamentoController.class).withSelfRel());
 
-        pedidoModel.getEnderecoEntrega().getCidade().add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(CidadeController.class)
-                        .buscar(pedido.getEnderecoEntrega().getCidade().getId())).withSelfRel());
+        pedidoModel.getEnderecoEntrega().getCidade().add(
+                algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
 
         pedidoModel.getItens().forEach(itemPedidoModel -> {
-            itemPedidoModel.add(WebMvcLinkBuilder.linkTo(
-                    WebMvcLinkBuilder.methodOn(RestauranteProdutosController.class)
-                            .buscar(pedidoModel.getRestaurante().getId(), itemPedidoModel.getProdutoId())).withRel("produto"));
+            itemPedidoModel.add(algaLinks.linkToItens(pedidoModel.getRestaurante().getId(), itemPedidoModel.getProdutoId()));
         });
 
 

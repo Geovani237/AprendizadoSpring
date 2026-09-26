@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.CidadeController;
 import com.algaworks.AprendizadoSpring.api.controller.UsuarioController;
 import com.algaworks.AprendizadoSpring.api.controller.UsuarioGrupoController;
@@ -24,6 +25,9 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -32,13 +36,11 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        usuarioModel.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(UsuarioController.class)
-                        .listar()).withRel("usuarios"));
+        usuarioModel.add(
+                algaLinks.linkToListarUsuarios("usuarios"));
 
-        usuarioModel.add(WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder.methodOn(UsuarioGrupoController.class)
-                        .listar(usuarioModel.getId())).withRel("grupo-usuario"));
+        usuarioModel.add(
+                algaLinks.linkToListarGrupoUsuarios(usuario.getId(), "grupo-usuario"));
 
         return usuarioModel;
     }

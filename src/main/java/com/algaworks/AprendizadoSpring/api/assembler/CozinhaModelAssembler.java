@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.CozinhaController;
 import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
@@ -18,6 +19,9 @@ public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<C
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public CozinhaModelAssembler() {
         super(CozinhaController.class, CozinhaModel.class);
     }
@@ -27,7 +31,7 @@ public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<C
         CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
         modelMapper.map(cozinha, cozinhaModel);
 
-        cozinhaModel.add(WebMvcLinkBuilder.linkTo(CozinhaController.class).withRel("cozinhas"));
+        cozinhaModel.add(algaLinks.linkToCozinhas("cozinhas"));
 
         return cozinhaModel;
     }
