@@ -17,7 +17,7 @@ public interface RestauranteControllerOpenApi {
     @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoModelOpenApi.class)
     @ApiImplicitParams({
             @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
-                    name = "projecao", paramType = "query", type = "string")
+                    name = "projecao", paramType = "query", dataTypeClass = String.class)
     })
     @JsonView(RestauranteView.Resumo.class)
      List<RestauranteModel> listar();

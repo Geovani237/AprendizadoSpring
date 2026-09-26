@@ -15,7 +15,7 @@ public interface PedidoControllerOpenApi {
 
     @ApiImplicitParams({
             @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-                    name = "campos", paramType = "query", type = "string")
+                    name = "campos", paramType = "query", dataTypeClass = String.class)
     })
     @ApiOperation("Pesquisa os pedidos")
     PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
@@ -30,7 +30,7 @@ public interface PedidoControllerOpenApi {
 
     @ApiImplicitParams({
             @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-                    name = "campos", paramType = "query", type = "string")
+                    name = "campos", paramType = "query", dataTypeClass = String.class)
     })
     @ApiOperation("Busca um pedido por código")
     @ApiResponses({
