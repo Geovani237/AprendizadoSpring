@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.api.assembler;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.controller.*;
 import com.algaworks.AprendizadoSpring.api.model.PedidoModel;
 import com.algaworks.AprendizadoSpring.api.model.RestauranteResumoModel;
@@ -27,6 +28,9 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public PedidoModelAssembler() {
         super(PedidoController.class, PedidoModel.class);
     }
@@ -35,20 +39,8 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
         PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
 
-        TemplateVariables pageVariables = new TemplateVariables(
-                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
-        TemplateVariables filterVariables = new TemplateVariables(
-                new TemplateVariable("clienteId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        String pedidosUrl = WebMvcLinkBuilder.linkTo(PedidoController.class).toUri().toString();
-
-        pedidoModel.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables.concat(filterVariables)), "pedidos"));
+        pedidoModel.add(algaLinks.linkToPedidos());
 
 
 //        pedidoModel.add(WebMvcLinkBuilder.linkTo(PedidoController.class).withRel("pedidos"));
