@@ -4,10 +4,12 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
 
+@Relation(collectionRelation = "produtos")
 @Getter
 @Setter
 public class ProdutoModel extends RepresentationModel<ProdutoModel> {
