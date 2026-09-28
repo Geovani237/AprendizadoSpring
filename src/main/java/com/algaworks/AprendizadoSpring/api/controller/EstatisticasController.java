@@ -1,10 +1,13 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.algaworks.AprendizadoSpring.domain.filter.VendaDiariaFilter;
 import com.algaworks.AprendizadoSpring.domain.model.dto.VendaDiaria;
 import com.algaworks.AprendizadoSpring.domain.service.VendaQueryService;
+import com.algaworks.AprendizadoSpring.domain.service.VendaReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estatisticas")
+@RequestMapping(path = "/estatisticas")
 public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
@@ -25,4 +28,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
     }
+
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
+    }
+
 }
