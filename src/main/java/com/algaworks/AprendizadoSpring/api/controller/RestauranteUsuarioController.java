@@ -11,6 +11,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class RestauranteUsuarioController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
     @Autowired
-    private CadastroRestauranteService cadastroRestauranteService;
+    private CadastroRestauranteService cadastroRestaurante;
 
     @Autowired
     private UsuarioModelAssembler usuarioModelAssembler;
@@ -28,24 +29,40 @@ public class RestauranteUsuarioController implements RestauranteUsuarioResponsav
     @Autowired
     private AlgaLinks algaLinks;
 
-    @GetMapping()
+    @Override
+    @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId) {
-        Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
+        CollectionModel<UsuarioModel> usuariosModel = usuarioModelAssembler
+                .toCollectionModel(restaurante.getUsuarios())
                 .removeLinks()
-                .add(algaLinks.linkToRestauranteResponsaveis(restauranteId));
+                .add(algaLinks.linkToRestauranteResponsaveis(restauranteId))
+                .add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+
+        usuariosModel.getContent().stream().forEach(usuarioModel -> {
+            usuarioModel.add(algaLinks.linkToRestauranteResponsavelDesassociacao(
+                    restauranteId, usuarioModel.getId(), "desassociar"));
+        });
+
+        return usuariosModel;
     }
 
+    @Override
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desasscociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
-        cadastroRestauranteService.desassociarUsuario(restauranteId, usuarioId);
+    public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        cadastroRestaurante.desassociarUsuario(restauranteId, usuarioId);
+
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
-        cadastroRestauranteService.associarUsuario(restauranteId, usuarioId);
+    public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+        cadastroRestaurante.associarUsuario(restauranteId, usuarioId);
+
+        return ResponseEntity.noContent().build();
     }
 }
