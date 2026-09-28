@@ -1,28 +1,22 @@
 package com.algaworks.AprendizadoSpring.api.controller;
 
+import com.algaworks.AprendizadoSpring.api.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.assembler.ProdutoModelAssembler;
-import com.algaworks.AprendizadoSpring.api.assembler.RestauranteModelAssembler;
 import com.algaworks.AprendizadoSpring.api.disassembler.ProdutoInputDisassembler;
-import com.algaworks.AprendizadoSpring.api.disassembler.RestauranteInputDisassembler;
 import com.algaworks.AprendizadoSpring.api.model.ProdutoModel;
-import com.algaworks.AprendizadoSpring.api.model.RestauranteModel;
 import com.algaworks.AprendizadoSpring.api.model.input.ProdutoInput;
-import com.algaworks.AprendizadoSpring.api.model.input.RestauranteInput;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.RestauranteProdutoControllerOpenApi;
-import com.algaworks.AprendizadoSpring.domain.exception.CidadeNaoEncontradaException;
-import com.algaworks.AprendizadoSpring.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.exception.ProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
 import com.algaworks.AprendizadoSpring.domain.model.Restaurante;
 import com.algaworks.AprendizadoSpring.domain.repository.ProdutoRepository;
-import com.algaworks.AprendizadoSpring.domain.repository.RestauranteRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroProdutoService;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/produtos")
-public class RestauranteProdutosController implements RestauranteProdutoControllerOpenApi {
+public class RestauranteProdutoController implements RestauranteProdutoControllerOpenApi {
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -47,11 +41,16 @@ public class RestauranteProdutosController implements RestauranteProdutoControll
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
+    @Override
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
-                                     @RequestParam(required = false) boolean incluirInativos) {
+    public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                                @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        List<Produto> todosProdutos;
+
+        List<Produto> todosProdutos = null;
 
         if (incluirInativos) {
             todosProdutos = produtoRepository.findTodosByRestaurante(restaurante);
@@ -59,7 +58,8 @@ public class RestauranteProdutosController implements RestauranteProdutoControll
             todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
         }
 
-        return produtoModelAssembler.toCollectionModel(todosProdutos);
+        return produtoModelAssembler.toCollectionModel(todosProdutos)
+                .add(algaLinks.linkToProdutos(restauranteId));
     }
 
     @GetMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)

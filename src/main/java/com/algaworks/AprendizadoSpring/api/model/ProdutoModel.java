@@ -3,13 +3,14 @@ package com.algaworks.AprendizadoSpring.api.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class ProdutoModel {
+public class ProdutoModel extends RepresentationModel<ProdutoModel> {
 
     @ApiModelProperty(example = "1")
     private Long id;
