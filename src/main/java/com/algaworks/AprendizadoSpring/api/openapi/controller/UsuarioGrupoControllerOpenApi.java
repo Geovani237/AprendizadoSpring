@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.api.openapi.controller;
 import com.algaworks.AprendizadoSpring.api.model.GrupoModel;
 import io.swagger.annotations.*;
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface UsuarioGrupoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    List<GrupoModel> listar(
+    CollectionModel<GrupoModel> listar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId);
 

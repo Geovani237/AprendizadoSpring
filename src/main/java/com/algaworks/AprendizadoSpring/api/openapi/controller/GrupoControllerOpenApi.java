@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.GrupoModel;
 import com.algaworks.AprendizadoSpring.api.model.input.GrupoInput;
 import io.swagger.annotations.*;
+import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
 
@@ -11,8 +12,8 @@ import java.util.List;
 public interface GrupoControllerOpenApi {
 
 
-    @ApiOperation("Lista grupos")
-     List<GrupoModel> listar();
+    @ApiOperation("Lista os grupos")
+    CollectionModel<GrupoModel> listar();
 
 
     @ApiOperation("Busca grupo por Id")

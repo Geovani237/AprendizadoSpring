@@ -8,6 +8,7 @@ import com.algaworks.AprendizadoSpring.api.openapi.controller.UsuarioGrupoContro
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,11 +23,13 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     @Autowired
     private GrupoModelAssembler grupoModelAssembler;
 
+    @Override
     @GetMapping
-    public List<GrupoModel> listar(@PathVariable Long usuarioId) {
+    public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 
-        return grupoModelAssembler.toColletionModel(usuario.getGrupos());
+        return grupoModelAssembler.toCollectionModel(usuario.getGrupos())
+                .removeLinks();
     }
 
     @PutMapping("/{grupoId}")
