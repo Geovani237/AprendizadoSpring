@@ -34,7 +34,7 @@ public class RestauranteUsuarioController implements RestauranteUsuarioResponsav
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
                 .removeLinks()
-                .add(algaLinks.linkToListarRestaurantes(restauranteId));
+                .add(algaLinks.linkToResponsaveisRestaurante(restauranteId));
     }
 
     @DeleteMapping("/{usuarioId}")

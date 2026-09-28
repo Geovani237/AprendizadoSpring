@@ -1,6 +1,5 @@
 package com.algaworks.AprendizadoSpring.api.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +8,6 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Relation(collectionRelation = "pedidoResumo")
 @Getter
@@ -34,6 +32,6 @@ public class PedidoResumoModel extends RepresentationModel<PedidoResumoModel> {
     @ApiModelProperty(example = "2019-12-01T20:34:04Z")
     private OffsetDateTime dataCriacao;
 
-    private RestauranteResumoModel restaurante;
+    private RestauranteApenasNomeModel restaurante;
     private UsuarioModel cliente;
 }

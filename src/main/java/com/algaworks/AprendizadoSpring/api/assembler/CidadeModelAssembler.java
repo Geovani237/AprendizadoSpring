@@ -31,13 +31,9 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 
         modelMapper.map(cidade, cidadeModel);
 
+        cidadeModel.add(algaLinks.linkToCidades("cidades"));
 
-        cidadeModel.add(
-                algaLinks.linkToListarCidade("cidades"));
-
-
-        cidadeModel.getEstado().add(
-                algaLinks.linkToEstado(cidade.getEstado().getId()));
+        cidadeModel.getEstado().add(algaLinks.linkToEstado(cidadeModel.getEstado().getId()));
 
         return cidadeModel;
     }
@@ -45,7 +41,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
     @Override
     public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
         return super.toCollectionModel(entities)
-                .add(WebMvcLinkBuilder.linkTo(CidadeController.class).withSelfRel());
+                .add(algaLinks.linkToCidades());
     }
 
 }

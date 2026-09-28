@@ -32,15 +32,14 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
         super(UsuarioController.class, UsuarioModel.class);
     }
 
+    @Override
     public UsuarioModel toModel(Usuario usuario) {
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        usuarioModel.add(
-                algaLinks.linkToListarUsuarios("usuarios"));
+        usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
 
-        usuarioModel.add(
-                algaLinks.linkToListarGrupoUsuarios(usuario.getId(), "grupo-usuario"));
+        usuarioModel.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
 
         return usuarioModel;
     }
@@ -48,7 +47,7 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
     @Override
     public CollectionModel<UsuarioModel> toCollectionModel(Iterable<? extends Usuario> entities) {
         return super.toCollectionModel(entities)
-                .add(WebMvcLinkBuilder.linkTo(UsuarioController.class).withSelfRel());
+                .add(algaLinks.linkToUsuarios());
     }
 
 }

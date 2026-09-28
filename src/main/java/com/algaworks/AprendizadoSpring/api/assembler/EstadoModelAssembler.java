@@ -33,7 +33,7 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(algaLinks.linkToEstado("estados"));
+        estadoModel.add(algaLinks.linkToEstados());
 
         return estadoModel;
     }
@@ -42,6 +42,6 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Override
     public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
         return super.toCollectionModel(entities)
-                .add(WebMvcLinkBuilder.linkTo(EstadoController.class).withSelfRel());
+                .add(algaLinks.linkToEstados());
     }
 }

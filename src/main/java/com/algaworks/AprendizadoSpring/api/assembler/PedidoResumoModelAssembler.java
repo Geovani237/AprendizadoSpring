@@ -30,18 +30,19 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
         super(PedidoController.class, PedidoResumoModel.class);
     }
 
+    @Override
     public PedidoResumoModel toModel(Pedido pedido) {
-        PedidoResumoModel pedidoResumoModel = createModelWithId(pedido.getCodigo(), pedido);
-        modelMapper.map(pedido, pedidoResumoModel);
+        PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+        modelMapper.map(pedido, pedidoModel);
 
-        pedidoResumoModel.add(algaLinks.linkToPedidosResumoModel());
+        pedidoModel.add(algaLinks.linkToPedidos());
 
-        pedidoResumoModel.getRestaurante().add(
-                algaLinks.linkToRestaurantes(pedido.getRestaurante().getId()));
+        pedidoModel.getRestaurante().add(
+                algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoResumoModel.getCliente().add(algaLinks.linkToCliente(pedido.getCliente().getId()));
+        pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
 
-         return pedidoResumoModel;
+        return pedidoModel;
     }
 
     public List<PedidoResumoModel> toCollectionModel(List<Pedido> pedidos) {
