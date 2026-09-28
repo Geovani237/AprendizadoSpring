@@ -29,6 +29,18 @@ public class AlgaLinks {
         return Link.of(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filterVariables)), "pedidos");
     }
 
+    public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).confirmar(codigoPedido)).withRel(rel);
+    }
+
+    public Link linkToCancelarPedido(String codigoPedido, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).cancelar(codigoPedido)).withRel(rel);
+    }
+
+    public Link linkToEntregarPedido(String codigoPedido, String rel) {
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(FluxoPedidoController.class).entregar(codigoPedido)).withRel(rel);
+    }
+
     public Link linkToRestaurantes(Long restauranteId, String rel) {
         return WebMvcLinkBuilder.linkTo(
                 WebMvcLinkBuilder.methodOn(RestauranteController.class)
