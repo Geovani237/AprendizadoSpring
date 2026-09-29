@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class CozinhasModelOpenApi {
 
     private CozinhasModelOpenApi.CozinhasEmbeddedModelOpenApi _embedded;
-    private Link _links;
+    private Links _links;
     private PageModelOpenApi page;
 
     @ApiModel("CidadesEmbeddedModel")

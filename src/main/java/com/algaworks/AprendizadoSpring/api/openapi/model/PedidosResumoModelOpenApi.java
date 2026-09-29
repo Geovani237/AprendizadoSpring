@@ -1,7 +1,6 @@
-package com.algaworks.AprendizadoSpring.api.openapi.controller;
+package com.algaworks.AprendizadoSpring.api.openapi.model;
 
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
-import com.algaworks.AprendizadoSpring.api.openapi.model.PageModelOpenApi;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.algaworks.AprendizadoSpring.core.openapi;
 
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.*;
-import com.algaworks.AprendizadoSpring.api.openapi.controller.PedidosResumoModelOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algaworks.AprendizadoSpring.api.openapi.model.*;
 import com.amazonaws.auth.policy.Resource;
 import com.fasterxml.classmate.TypeResolver;
@@ -10,7 +10,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;

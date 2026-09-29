@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class CidadesModelOpenApi {
 
     private CidadeEmbeddedModelOpenApi _embedded;
-    private Link _links;
+    private Links _links;
 
     @ApiModel("CidadesEmbeddedModel")
     @Data
