@@ -1,9 +1,8 @@
 package com.algaworks.AprendizadoSpring.core.openapi;
 
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
-import com.algaworks.AprendizadoSpring.api.model.*;
-import com.algaworks.AprendizadoSpring.api.openapi.model.PedidosResumoModelOpenApi;
-import com.algaworks.AprendizadoSpring.api.openapi.model.*;
+import com.algaworks.AprendizadoSpring.api.v1.openapi.model.*;
+import com.algaworks.AprendizadoSpring.api.v1.model.*;
 import com.amazonaws.auth.policy.Resource;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

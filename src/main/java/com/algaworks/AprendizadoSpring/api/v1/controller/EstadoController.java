@@ -1,0 +1,81 @@
+package com.algaworks.AprendizadoSpring.api.v1.controller;
+
+import com.algaworks.AprendizadoSpring.api.v1.assembler.EstadoModelAssembler;
+import com.algaworks.AprendizadoSpring.api.v1.disassembler.EstadoInputDisassembler;
+import com.algaworks.AprendizadoSpring.api.v1.model.EstadoModel;
+import com.algaworks.AprendizadoSpring.api.v1.model.input.EstadoInput;
+import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.domain.model.Estado;
+import com.algaworks.AprendizadoSpring.domain.repository.EstadoRepository;
+import com.algaworks.AprendizadoSpring.domain.service.CadastroEstadoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping("/estados")
+public class EstadoController implements EstadoControllerOpenApi {
+
+    @Autowired
+    private EstadoRepository estadoRepository;
+
+    @Autowired
+    private CadastroEstadoService cadastroEstado;
+
+    @Autowired
+    private EstadoModelAssembler estadoModelAssembler;
+
+    @Autowired
+    private EstadoInputDisassembler estadoInputDisassembler;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public CollectionModel<EstadoModel> listar() {
+        return estadoModelAssembler.toCollectionModel(estadoRepository.findAll());
+    }
+
+    @GetMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public EstadoModel buscar(@PathVariable Long estadoId) {
+        return estadoModelAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+        Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
+    }
+
+    @PutMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public EstadoModel atualizar(@PathVariable Long estadoId,
+                                            @RequestBody @Valid EstadoInput estadoInput) {
+        Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
+        estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
+//        BeanUtils.copyProperties(estado, estadoAtual, "id");
+
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));
+    }
+
+
+    @DeleteMapping("/{estadoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long estadoId) {
+        cadastroEstado.excluir(estadoId);
+//        try {
+//            cadastroEstado.excluir(estadoId);
+//            return ResponseEntity.noContent().build();
+//
+//        } catch (EntidadeNaoEncontradaException e) {
+//            return ResponseEntity.notFound().build();
+//
+//        } catch (EntidadeEmUsoException e) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//        }
+
+    }
+}

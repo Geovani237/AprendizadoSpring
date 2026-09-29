@@ -1,7 +1,7 @@
 package com.algaworks.AprendizadoSpring.core.modelmapper;
 
-import com.algaworks.AprendizadoSpring.api.model.EnderecoModel;
-import com.algaworks.AprendizadoSpring.api.model.input.ItemPedidoInput;
+import com.algaworks.AprendizadoSpring.api.v1.model.EnderecoModel;
+import com.algaworks.AprendizadoSpring.api.v1.model.input.ItemPedidoInput;
 import com.algaworks.AprendizadoSpring.domain.model.Endereco;
 import com.algaworks.AprendizadoSpring.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
