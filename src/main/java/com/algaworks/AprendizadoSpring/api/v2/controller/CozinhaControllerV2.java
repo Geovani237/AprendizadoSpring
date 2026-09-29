@@ -9,6 +9,7 @@ import com.algaworks.AprendizadoSpring.api.v2.assembler.CozinhaModelAssemblerV2;
 import com.algaworks.AprendizadoSpring.api.v2.disassembler.CozinhaInputDisassemblerV2;
 import com.algaworks.AprendizadoSpring.api.v2.model.CozinhaModelV2;
 import com.algaworks.AprendizadoSpring.api.v2.model.input.CozinhaInputV2;
+import com.algaworks.AprendizadoSpring.api.v2.openapi.controller.CozinhaControllerV2OpenApi;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
@@ -28,7 +29,7 @@ import javax.validation.Valid;
 //@ResponseBody //Indica que as resposta do metodos desse controlador deve ser enviada como resposta da requisição HTTP
 @RestController // Essa anotação contem a anotação de controller e responsebody
 @RequestMapping(value = "/v2/cozinhas") //, produces = MediaType.APPLICATION_JSON_VALUE) //As requisições que chegam na nossa api temos devem ser mapeadas, para que esse controlador fique responsavel por certas requisições
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
