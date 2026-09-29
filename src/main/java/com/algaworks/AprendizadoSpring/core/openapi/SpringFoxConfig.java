@@ -1,9 +1,11 @@
 package com.algaworks.AprendizadoSpring.core.openapi;
 
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
+import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.PedidosResumoModelOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.model.CidadesModelOpenApi;
 import com.algaworks.AprendizadoSpring.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.AprendizadoSpring.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.AprendizadoSpring.api.openapi.model.PageableModelOpenApi;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -70,6 +73,9 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidosResumoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CidadeModel.class),
+                        CidadesModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuários"),
