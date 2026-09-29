@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/grupos")
 public class GrupoController implements GrupoControllerOpenApi {
 
     @Autowired
@@ -33,7 +33,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     private GrupoModelAssembler grupoModelAssembler;
 
     @Autowired
-    private GrupoInputDisassembler grupoInputDissabler;
+    private GrupoInputDisassembler grupoInputDisassembler;
 
     @Override
     @GetMapping
@@ -42,17 +42,22 @@ public class GrupoController implements GrupoControllerOpenApi {
 
         return grupoModelAssembler.toCollectionModel(todosGrupos);
     }
+
     @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public GrupoModel buscar(@PathVariable Long grupoId) {
         return grupoModelAssembler.toModel(cadastroGrupo.buscarOuFalhar(grupoId));
     }
 
-    @PostMapping(MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
-        Grupo grupo = grupoInputDissabler.toDomainObject(grupoInput);
-        return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
+        Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
+
+        grupo = cadastroGrupo.salvar(grupo);
+
+        return grupoModelAssembler.toModel(grupo);
     }
 
     @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,7 +68,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         try {
             Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
 
-            grupoInputDissabler.copyToDomainObject(grupoInput, grupo);
+            grupoInputDisassembler.copyToDomainObject(grupoInput, grupo);
 
             return grupoModelAssembler.toModel(grupoRepository.save(grupo));
         } catch (GrupoNaoEncontradaException e) {

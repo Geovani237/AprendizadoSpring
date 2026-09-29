@@ -23,7 +23,7 @@ import javax.validation.Valid;
 //@Controller
 //@ResponseBody //Indica que as resposta do metodos desse controlador deve ser enviada como resposta da requisição HTTP
 @RestController // Essa anotação contem a anotação de controller e responsebody
-@RequestMapping(value = "/cozinhas") //, produces = MediaType.APPLICATION_JSON_VALUE) //As requisições que chegam na nossa api temos devem ser mapeadas, para que esse controlador fique responsavel por certas requisições
+@RequestMapping(value = "/v1/cozinhas") //, produces = MediaType.APPLICATION_JSON_VALUE) //As requisições que chegam na nossa api temos devem ser mapeadas, para que esse controlador fique responsavel por certas requisições
 public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired

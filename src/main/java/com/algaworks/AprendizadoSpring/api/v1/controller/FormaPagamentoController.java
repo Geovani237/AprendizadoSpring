@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/formas-pagamentos")
+@RequestMapping(value = "/v1/formas-pagamentos")
 public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
