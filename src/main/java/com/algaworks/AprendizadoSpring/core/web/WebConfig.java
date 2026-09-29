@@ -20,10 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
 //                .maxAge(10);
     }
 
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(AlgaMediaTypes.V2_APPLICATION_JSON);
-    }
 
     @Bean
     public Filter shallowEtagHeaderFilter() {
