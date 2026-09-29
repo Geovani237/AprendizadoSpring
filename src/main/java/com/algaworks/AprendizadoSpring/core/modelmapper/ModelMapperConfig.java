@@ -2,6 +2,8 @@ package com.algaworks.AprendizadoSpring.core.modelmapper;
 
 import com.algaworks.AprendizadoSpring.api.v1.model.EnderecoModel;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.ItemPedidoInput;
+import com.algaworks.AprendizadoSpring.api.v2.model.input.CidadeInputV2;
+import com.algaworks.AprendizadoSpring.domain.model.Cidade;
 import com.algaworks.AprendizadoSpring.domain.model.Endereco;
 import com.algaworks.AprendizadoSpring.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,9 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
+
+        modelMapper.createTypeMap(CidadeInputV2.class, Cidade.class)
+                .addMappings(mapper -> mapper.skip(Cidade::setId));
 
         var enderecoToEndececoModelTypeMap = modelMapper.createTypeMap(Endereco.class, EnderecoModel.class);
 
