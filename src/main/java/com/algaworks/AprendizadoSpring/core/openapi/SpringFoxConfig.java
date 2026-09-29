@@ -3,12 +3,10 @@ package com.algaworks.AprendizadoSpring.core.openapi;
 import com.algaworks.AprendizadoSpring.api.exceptionhandler.Problem;
 import com.algaworks.AprendizadoSpring.api.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.model.CozinhaModel;
+import com.algaworks.AprendizadoSpring.api.model.EstadoModel;
 import com.algaworks.AprendizadoSpring.api.model.PedidoResumoModel;
 import com.algaworks.AprendizadoSpring.api.openapi.controller.PedidosResumoModelOpenApi;
-import com.algaworks.AprendizadoSpring.api.openapi.model.CidadesModelOpenApi;
-import com.algaworks.AprendizadoSpring.api.openapi.model.CozinhasModelOpenApi;
-import com.algaworks.AprendizadoSpring.api.openapi.model.LinksModelOpenApi;
-import com.algaworks.AprendizadoSpring.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.AprendizadoSpring.api.openapi.model.*;
 import com.amazonaws.auth.policy.Resource;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -77,6 +75,9 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, CidadeModel.class),
                         CidadesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, EstadoModel.class),
+                        EstadosModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(new Tag("Cidades", "Gerencia as cidades"),
                         new Tag("Grupos", "Gerencia os grupos de usuários"),
