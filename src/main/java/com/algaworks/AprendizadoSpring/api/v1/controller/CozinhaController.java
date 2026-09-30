@@ -48,6 +48,11 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisições com Get chegam até esse metodo
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
         logger.info("Consultando cozinhas com página de {} registros...", pageable.getPageSize());
+
+        if (true) {
+            throw new RuntimeException("Teste de exception");
+        }
+
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
 //        List<CozinhaModel> cozinhasModel = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());

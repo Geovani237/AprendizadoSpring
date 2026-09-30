@@ -7,7 +7,10 @@ import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -34,6 +37,7 @@ import java.util.stream.Collectors;
 
 // @ControllerAdvice -> Componente interceptor (AOP) do Spring que centraliza
 // o tratamento de exceções e a formatação de dados em nível de aplicação.
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     //ResponseEntityExceptionHandler -> Classe base estendível para manipular
@@ -42,6 +46,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String MSG_ERRO_USUARIO = "Ocorreu um erro interno inesperado no sistema. "
             + "Tente novamente e se o problema persistir, entre em contato "
             + "com o administrador do sistema.";
+
 
     @Autowired
     private MessageSource messageSource;
@@ -129,7 +134,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         // fazendo logging) para mostrar a stacktrace no console
         // Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes
         // para você durante, especialmente na fase de desenvolvimento
-        // ex.printStackTrace();
+         log.error(ex.getMessage(), ex);
 
         Problem problem = createProblemBuilder(status, problemType, MSG_ERRO_USUARIO)
                 .userMessage(MSG_ERRO_USUARIO)
