@@ -13,8 +13,8 @@ import javax.servlet.Filter;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private ApiRetirementHandler apiRetirementHandler;
+//    @Autowired
+//    private ApiRetirementHandler apiRetirementHandler;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -24,10 +24,10 @@ public class WebConfig implements WebMvcConfigurer {
 //                .maxAge(10);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(apiRetirementHandler);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(apiRetirementHandler);
+//    }
 
     @Bean
     public Filter shallowEtagHeaderFilter() {

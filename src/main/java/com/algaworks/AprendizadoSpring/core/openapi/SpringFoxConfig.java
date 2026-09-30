@@ -45,7 +45,7 @@ import java.util.function.Consumer;
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
 
-//    @Bean
+    @Bean
     public Docket apiDocketV1() {
         var typeResolver = new TypeResolver();
 
@@ -111,7 +111,7 @@ public class SpringFoxConfig {
 
     }
 
-    @Bean
+//    @Bean
     public Docket apiDocketV2() {
         var typeResolver = new TypeResolver();
 
@@ -156,6 +156,15 @@ public class SpringFoxConfig {
 
     private ApiInfo apiInfoV1() {
         return new ApiInfoBuilder()
+                .title("AlgaFood API ")
+                .description("API aberta para clientes e restaurantes.")
+                .version("1")
+                .contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
+                .build();
+    }
+    /*
+    private ApiInfo apiInfoV1() {
+        return new ApiInfoBuilder()
                 .title("AlgaFood API (Depreciada)")
                 .description("API aberta para clientes e restaurantes.<br>" +
                         "<strong>Essa versão da API está depreciada e deixará de existir a partir de 01/01/2027." +
@@ -164,6 +173,7 @@ public class SpringFoxConfig {
                 .contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
                 .build();
     }
+     */
 
     private ApiInfo apiInfoV2() {
         return new ApiInfoBuilder()
