@@ -8,6 +8,8 @@ import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.CozinhaControll
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import javax.validation.Valid;
 @RequestMapping(value = "/v1/cozinhas") //, produces = MediaType.APPLICATION_JSON_VALUE) //As requisições que chegam na nossa api temos devem ser mapeadas, para que esse controlador fique responsavel por certas requisições
 public class CozinhaController implements CozinhaControllerOpenApi {
 
+    private static final Logger logger = LoggerFactory.getLogger(CozinhaController.class);
+
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
@@ -43,6 +47,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisições com Get chegam até esse metodo
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
+        logger.info("Consultando cozinhas com página de {} registros...", pageable.getPageSize());
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
 //        List<CozinhaModel> cozinhasModel = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
