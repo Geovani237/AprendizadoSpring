@@ -9,6 +9,7 @@ import com.algaworks.AprendizadoSpring.api.v1.model.input.PedidoInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.algaworks.AprendizadoSpring.core.data.PageWrapper;
 import com.algaworks.AprendizadoSpring.core.data.PageableTranslator;
+import com.algaworks.AprendizadoSpring.core.security.AlgaSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
@@ -51,6 +52,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private EmissaoPedidoService cadastroPedido;
+
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
 //    @GetMapping
 //    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
@@ -96,7 +100,7 @@ public class PedidoController implements PedidoControllerOpenApi {
             Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
             pedido.setCliente(new Usuario());
-            pedido.getCliente().setId(1L);
+            pedido.getCliente().setId(algaSecurity.getUsuarioId());
 
             return pedidoModelAssembler.toModel(cadastroPedido.emitir(pedido));
         } catch (EntidadeNaoEncontradaException e) {
