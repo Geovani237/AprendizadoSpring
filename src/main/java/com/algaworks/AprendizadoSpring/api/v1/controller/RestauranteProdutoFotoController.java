@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.v1.assembler.FotoProdutoModelAssemble
 import com.algaworks.AprendizadoSpring.api.v1.model.FotoProdutoModel;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.FotoProdutoInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.FotoProduto;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
@@ -41,6 +42,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProduto;
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId,
                                           @PathVariable Long produtoId,
@@ -61,6 +63,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return fotoProdutoModelAssembler.toModel(fotoSalva);
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -101,6 +104,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long restauranteId,

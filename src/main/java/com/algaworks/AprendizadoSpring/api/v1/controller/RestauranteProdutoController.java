@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.v1.disassembler.ProdutoInputDisassemb
 import com.algaworks.AprendizadoSpring.api.v1.model.ProdutoModel;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.ProdutoInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.exception.ProdutoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Produto;
@@ -45,6 +46,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId,
                                                 @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
@@ -62,12 +64,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
                 .add(algaLinks.linkToProdutos(restauranteId));
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProdutoService.buscarOuFalhar(produtoId, restauranteId);
         return produtoModelAssembler.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel adicionar(@PathVariable Long restauranteId,
@@ -80,6 +84,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(cadastroProdutoService.salvar(produto));
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(value = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoModel atualizar(@PathVariable Long restauranteId,
             @PathVariable Long produtoId, @RequestBody @Valid ProdutoInput produtoInput) {
