@@ -5,6 +5,7 @@ import com.algaworks.AprendizadoSpring.api.v1.disassembler.CozinhaInputDisassemb
 import com.algaworks.AprendizadoSpring.api.v1.model.CozinhaModel;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.CozinhaInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.model.Cozinha;
 import com.algaworks.AprendizadoSpring.domain.repository.CozinhaRepository;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroCozinhaService;
@@ -18,7 +19,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,7 +46,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler pagedResourcesAssembler;
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) //Requisições com Get chegam até esse metodo
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
@@ -61,7 +62,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     }
 
 
-    @PreAuthorize("isAuthenticated()")
+//    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(value = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaModel buscar(@PathVariable Long cozinhaId) {
         return cozinhaModelAssembler.toModel(cadastroCozinha.buscarOuFalhar(cozinhaId));
@@ -74,7 +76,9 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 //        return ResponseEntity.notFound().build();
     }
 
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PodeEditarCozinhas
+    @CheckSecurity.Cozinhas.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -82,7 +86,9 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
     }
 
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PodeEditarCozinhas
+    @CheckSecurity.Cozinhas.PodeEditar
     @PutMapping(value = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
 
@@ -105,7 +111,9 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     }
 
 
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+//    @PodeEditarCozinhas
+    @CheckSecurity.Cozinhas.PodeEditar
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {
