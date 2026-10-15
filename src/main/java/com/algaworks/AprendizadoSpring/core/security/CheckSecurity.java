@@ -56,5 +56,14 @@ public @interface CheckSecurity {
         @Target(METHOD)
         public @interface PodeBuscar { }
 
+        // filtrar pedidos que apenas ele emitiu
+        // filtrando restaurantes que ele é responsavel
+        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or "
+                + "@algaSecurity.getUsuarioId() == #filtro.clienteId or"
+                + "@algaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        public @interface PodePesquisar { }
+
     }
 }
