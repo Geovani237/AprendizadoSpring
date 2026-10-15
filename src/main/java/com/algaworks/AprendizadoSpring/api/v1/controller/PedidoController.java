@@ -10,6 +10,7 @@ import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.PedidoControlle
 import com.algaworks.AprendizadoSpring.core.data.PageWrapper;
 import com.algaworks.AprendizadoSpring.core.data.PageableTranslator;
 import com.algaworks.AprendizadoSpring.core.security.AlgaSecurity;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
@@ -87,6 +88,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping(path = "/{codigoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PedidoModel buscar(@PathVariable String codigoId) {
         return pedidoModelAssembler.toModel(cadastroPedido.buscarOuFalhar(codigoId));
