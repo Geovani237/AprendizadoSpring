@@ -4,6 +4,7 @@ import com.algaworks.AprendizadoSpring.api.v1.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.v1.assembler.GrupoModelAssembler;
 import com.algaworks.AprendizadoSpring.api.v1.model.GrupoModel;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
 import com.algaworks.AprendizadoSpring.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
@@ -42,6 +44,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
         return gruposModel;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -51,6 +54,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PutMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
