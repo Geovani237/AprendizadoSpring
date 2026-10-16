@@ -7,6 +7,7 @@ import com.algaworks.AprendizadoSpring.api.v1.model.input.SenhaInput;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.UsuarioAtualizaInput;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.UsuarioComSenhaInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.exception.UsuarioNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
@@ -36,17 +37,20 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar() {
         return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel buscar(@PathVariable Long usuarioId) {
         return usuarioModelAssembler.toModel(cadastroService.buscarOuFalhar(usuarioId));
     }
 
+    // O cadastro de usuário ficará público (aberto)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
@@ -55,6 +59,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     }
 
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @PutMapping(value = "/{usuarioId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public UsuarioModel atualizar(@PathVariable Long usuarioId,
@@ -70,6 +75,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         }
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @PutMapping(value = "/{usuarioId}/senha", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long usuarioId,
