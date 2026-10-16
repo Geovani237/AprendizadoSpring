@@ -1,6 +1,7 @@
 package com.algaworks.AprendizadoSpring.api.v1.controller;
 
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.filter.VendaDiariaFilter;
 import com.algaworks.AprendizadoSpring.domain.model.dto.VendaDiaria;
 import com.algaworks.AprendizadoSpring.domain.service.VendaQueryService;
@@ -21,6 +22,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     @Autowired
     private VendaQueryService vendaQueryService;
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(value = "/vendas-diarias", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
