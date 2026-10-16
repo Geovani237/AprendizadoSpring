@@ -6,6 +6,7 @@ import com.algaworks.AprendizadoSpring.api.v1.disassembler.CidadeInputDisassembl
 import com.algaworks.AprendizadoSpring.api.v1.model.CidadeModel;
 import com.algaworks.AprendizadoSpring.api.v1.model.input.CidadeInput;
 import com.algaworks.AprendizadoSpring.api.v1.openapi.controller.CidadeControllerOpenApi;
+import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
 import com.algaworks.AprendizadoSpring.domain.model.Cidade;
@@ -36,6 +37,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @CheckSecurity.Cidade.PodeConsultar
     @Deprecated
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeModel> listar() {
@@ -45,6 +47,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
     }
 
+    @CheckSecurity.Cidade.PodeConsultar
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
@@ -52,7 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cidadeModelAssembler.toModel(cidade);
     }
 
-
+    @CheckSecurity.Cidade.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -79,7 +82,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-
+    @CheckSecurity.Cidade.PodeEditar
     @PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel atualizar(@PathVariable Long cidadeId,
             @RequestBody @Valid CidadeInput cidadeInput) {
@@ -96,7 +99,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-
+    @CheckSecurity.Cidade.PodeEditar
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(
