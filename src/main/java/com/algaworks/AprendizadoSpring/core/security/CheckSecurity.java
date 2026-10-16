@@ -30,19 +30,19 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeGerenciarCadastro { }
+        public @interface PodeGerenciarCadastro {}
 
         @PreAuthorize(("hasAuthority('SCOPE_WRITE') and " +
                 "( hasAuthority('EDITAR_RESTAURANTES') or " +
                 "@algaSecurity.gerenciaRestaurante(#restauranteId))"))
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeGerenciarFuncionamento { }
+        public @interface PodeGerenciarFuncionamento {}
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeConsultar { }
+        public @interface PodeConsultar {}
 
     }
 
@@ -54,7 +54,7 @@ public @interface CheckSecurity {
                 "@algaSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeBuscar { }
+        public @interface PodeBuscar {}
 
         // filtrar pedidos que apenas ele emitiu
         // filtrando restaurantes que ele é responsavel
@@ -63,20 +63,33 @@ public @interface CheckSecurity {
                 + "@algaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodePesquisar { }
+        public @interface PodePesquisar {}
 
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeCriar { }
+        public @interface PodeCriar {}
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
                 + "@algaSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeGerenciarPedidos {
-        }
+        public @interface PodeGerenciarPedidos {}
+
+    }
+
+    public @interface FormaPagamentos{
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        public @interface PodeConsultar{}
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_FORMAS_PAGAMENTO')")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        public @interface PodeEditar{}
 
     }
 }
