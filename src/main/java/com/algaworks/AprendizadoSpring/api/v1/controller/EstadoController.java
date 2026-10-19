@@ -33,20 +33,20 @@ public class EstadoController implements EstadoControllerOpenApi {
     @Autowired
     private EstadoInputDisassembler estadoInputDisassembler;
 
-    @CheckSecurity.Estado.PodeConsultar
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<EstadoModel> listar() {
         return estadoModelAssembler.toCollectionModel(estadoRepository.findAll());
     }
 
-    @CheckSecurity.Estado.PodeConsultar
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public EstadoModel buscar(@PathVariable Long estadoId) {
         return estadoModelAssembler.toModel(cadastroEstado.buscarOuFalhar(estadoId));
     }
 
-    @CheckSecurity.Estado.PodeEditar
+    @CheckSecurity.Estados.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -54,7 +54,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
-    @CheckSecurity.Estado.PodeEditar
+    @CheckSecurity.Estados.PodeEditar
     @PutMapping(value = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public EstadoModel atualizar(@PathVariable Long estadoId,
@@ -67,7 +67,7 @@ public class EstadoController implements EstadoControllerOpenApi {
     }
 
 
-    @CheckSecurity.Estado.PodeEditar
+    @CheckSecurity.Estados.PodeEditar
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long estadoId) {

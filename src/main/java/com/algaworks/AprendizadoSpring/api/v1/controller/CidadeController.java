@@ -37,7 +37,7 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
-    @CheckSecurity.Cidade.PodeConsultar
+    @CheckSecurity.Cidades.PodeConsultar
     @Deprecated
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeModel> listar() {
@@ -47,7 +47,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
     }
 
-    @CheckSecurity.Cidade.PodeConsultar
+    @CheckSecurity.Cidades.PodeConsultar
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
@@ -55,7 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         return cidadeModelAssembler.toModel(cidade);
     }
 
-    @CheckSecurity.Cidade.PodeEditar
+    @CheckSecurity.Cidades.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -82,7 +82,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-    @CheckSecurity.Cidade.PodeEditar
+    @CheckSecurity.Cidades.PodeEditar
     @PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeModel atualizar(@PathVariable Long cidadeId,
             @RequestBody @Valid CidadeInput cidadeInput) {
@@ -99,7 +99,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-    @CheckSecurity.Cidade.PodeEditar
+    @CheckSecurity.Cidades.PodeEditar
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(

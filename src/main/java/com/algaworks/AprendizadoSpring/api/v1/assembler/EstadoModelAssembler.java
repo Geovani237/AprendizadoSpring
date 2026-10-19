@@ -3,6 +3,7 @@ package com.algaworks.AprendizadoSpring.api.v1.assembler;
 import com.algaworks.AprendizadoSpring.api.v1.AlgaLinks;
 import com.algaworks.AprendizadoSpring.api.v1.controller.EstadoController;
 import com.algaworks.AprendizadoSpring.api.v1.model.EstadoModel;
+import com.algaworks.AprendizadoSpring.core.security.AlgaSecurity;
 import com.algaworks.AprendizadoSpring.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,24 +20,33 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
     }
 
+    @Override
     public EstadoModel toModel(Estado estado) {
         EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
-
         modelMapper.map(estado, estadoModel);
 
-        estadoModel.add(algaLinks.linkToEstados());
+        if (algaSecurity.podeConsultarEstados()) {
+            estadoModel.add(algaLinks.linkToEstados("estados"));
+        }
 
         return estadoModel;
     }
 
-
     @Override
     public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> entities) {
-        return super.toCollectionModel(entities)
-                .add(algaLinks.linkToEstados());
+        CollectionModel<EstadoModel> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.podeConsultarEstados()) {
+            collectionModel.add(algaLinks.linkToEstados());
+        }
+
+        return collectionModel;
     }
 }
