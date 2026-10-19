@@ -16,13 +16,13 @@ public class WebConfig implements WebMvcConfigurer {
 //    @Autowired
 //    private ApiRetirementHandler apiRetirementHandler;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-//                .allowedOrigins("*");
-                .allowedMethods("*");
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//              .allowedOrigins("*");
+//                .allowedMethods("*");
 //                .maxAge(10);
-    }
+//    }
 
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
