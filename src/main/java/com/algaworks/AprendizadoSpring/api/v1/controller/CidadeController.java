@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -102,8 +103,10 @@ public class CidadeController implements CidadeControllerOpenApi {
     @CheckSecurity.Cidades.PodeEditar
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(
+    public ResponseEntity<Void> remover(
             @PathVariable Long cidadeId) {
         cadastroCidade.excluir(cidadeId);
+
+        return ResponseEntity.noContent().build();
     }
 }

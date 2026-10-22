@@ -126,9 +126,11 @@ public class RestauranteController implements RestauranteControllerOpenApi{
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
+    public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {
             cadastroRestaurante.ativar(restauranteIds);
+
+            return ResponseEntity.noContent().build();
         } catch (RestauranteNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -137,9 +139,11 @@ public class RestauranteController implements RestauranteControllerOpenApi{
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
+    public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> restauranteIds) {
         try {
             cadastroRestaurante.inativar(restauranteIds);
+
+            return ResponseEntity.noContent().build();
         } catch (RestauranteNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }

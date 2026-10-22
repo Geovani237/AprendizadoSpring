@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -70,8 +71,10 @@ public class EstadoController implements EstadoControllerOpenApi {
     @CheckSecurity.Estados.PodeEditar
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long estadoId) {
+    public ResponseEntity<Void> remover(@PathVariable Long estadoId) {
         cadastroEstado.excluir(estadoId);
+
+        return ResponseEntity.noContent().build();
 //        try {
 //            cadastroEstado.excluir(estadoId);
 //            return ResponseEntity.noContent().build();

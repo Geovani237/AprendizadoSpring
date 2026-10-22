@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -78,8 +79,10 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @PutMapping(value = "/{usuarioId}/senha", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alterarSenha(@PathVariable Long usuarioId,
-        @RequestBody @Valid SenhaInput senha){
+    public ResponseEntity<Void> alterarSenha(@PathVariable Long usuarioId,
+                                       @RequestBody @Valid SenhaInput senha){
         cadastroService.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
+
+        return ResponseEntity.noContent().build();
     }
 }
