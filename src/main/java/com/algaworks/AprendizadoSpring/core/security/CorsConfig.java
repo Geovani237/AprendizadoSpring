@@ -1,5 +1,6 @@
 package com.algaworks.AprendizadoSpring.core.security;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -17,8 +18,10 @@ public class CorsConfig {
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedMethods(Collections.singletonList("*"));
+        config.setAllowedOrigins(Arrays.asList(
+                "http://localhost",
+                "http://www.foodanalytics.local:8082"
+        ));        config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
