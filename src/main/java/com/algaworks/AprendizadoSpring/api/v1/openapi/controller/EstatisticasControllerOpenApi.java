@@ -1,12 +1,12 @@
 package com.algaworks.AprendizadoSpring.api.v1.openapi.controller;
 
-import com.algaworks.AprendizadoSpring.api.v1.controller.EstatisticasController;
 import com.algaworks.AprendizadoSpring.domain.filter.VendaDiariaFilter;
 import com.algaworks.AprendizadoSpring.domain.model.dto.VendaDiaria;
-import org.springframework.http.ResponseEntity;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import java.util.List;
 
+@SecurityRequirement(name = "security_auth")
 public interface EstatisticasControllerOpenApi {
 
     List<VendaDiaria> consultarVendasDiarias(

@@ -39,7 +39,6 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @CheckSecurity.Cidades.PodeConsultar
-    @Deprecated
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeModel> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
