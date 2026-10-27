@@ -18,7 +18,7 @@ public class ResourceServerConfig {
            .antMatchers("/oauth2/**").authenticated()
            .and()
            .csrf().disable()
-           .oauth2ResourceServer().opaqueToken();
+           .oauth2ResourceServer().jwt();
 
         return http.build();
    }
