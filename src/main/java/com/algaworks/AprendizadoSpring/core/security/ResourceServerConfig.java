@@ -33,26 +33,29 @@ public class ResourceServerConfig {
         return http.formLogin(Customizer.withDefaults()).build();
    }
 
-   private JwtAuthenticationConverter jwtAuthenticationConverter() {
-       JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
 
-       converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-           List<String> authorities = jwt.getClaimAsStringList("authorities");
-           if (authorities == null) {
-               return Collections.emptyList();
-           }
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+            JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+            //Ler permissões vindas dos scopes
+            Collection<GrantedAuthority> grantedAuthorities  = authoritiesConverter.convert(jwt);
 
-           JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
-           Collection<GrantedAuthority> grantedAuthorities = authoritiesConverter.convert(jwt);
+            //"authorities" é um campo customizado no AuthorizationServerConfig
+            List<String> authorities = jwt.getClaimAsStringList("authorities");
 
-           grantedAuthorities.addAll(authorities
-                   .stream()
-                   .map(SimpleGrantedAuthority::new)
-                   .collect(Collectors.toList()));
+            if (authorities == null) {
+                return grantedAuthorities; //Retorna lista com os scopes, para o fluxo de client credentials
+            }
 
-           return grantedAuthorities;
-       });
+            grantedAuthorities.addAll(authorities
+                    .stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList()));
 
-       return converter;
-   }
+            return grantedAuthorities;
+        });
+
+        return converter;
+    }
 }
