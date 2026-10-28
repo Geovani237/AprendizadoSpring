@@ -1,16 +1,8 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
-import com.algaworks.AprendizadoSpring.core.validation.Groups;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data

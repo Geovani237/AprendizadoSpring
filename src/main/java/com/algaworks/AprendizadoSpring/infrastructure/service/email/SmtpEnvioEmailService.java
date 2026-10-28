@@ -9,10 +9,10 @@ package com.algaworks.AprendizadoSpring.infrastructure.service.email;
 //import org.springframework.mail.javamail.MimeMessageHelper;
 //import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 //
-//import javax.mail.internet.MimeMessage;
+//import jakarta.mail.internet.MimeMessage;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

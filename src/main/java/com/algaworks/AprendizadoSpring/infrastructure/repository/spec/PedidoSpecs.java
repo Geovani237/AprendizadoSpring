@@ -5,7 +5,7 @@ import com.algaworks.AprendizadoSpring.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 
 public class PedidoSpecs {
 
@@ -22,11 +22,11 @@ public class PedidoSpecs {
                 var predicates = new ArrayList<Predicate>();
 
                 if (filtro.getClienteId() != null) {
-                    predicates.add(builder.equal(root.get("cliente"), filtro.getClienteId()));
+                    predicates.add(builder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
                 }
 
                 if (filtro.getRestauranteId() != null) {
-                    predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+                    predicates.add(builder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
                 }
 
                 if (filtro.getDataCriacaoInicio() != null) {

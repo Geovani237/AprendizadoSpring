@@ -3,14 +3,13 @@ package com.algaworks.AprendizadoSpring.domain.model;
 import com.algaworks.AprendizadoSpring.domain.event.PedidoCanceladoEvent;
 import com.algaworks.AprendizadoSpring.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,10 @@
 package com.algaworks.AprendizadoSpring.domain.model;
 
 import com.algaworks.AprendizadoSpring.core.validation.Groups;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data

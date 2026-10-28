@@ -13,13 +13,13 @@ import com.algaworks.AprendizadoSpring.core.security.AlgaSecurity;
 import com.algaworks.AprendizadoSpring.core.security.CheckSecurity;
 import com.algaworks.AprendizadoSpring.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.AprendizadoSpring.domain.exception.NegocioException;
+import com.algaworks.AprendizadoSpring.domain.filter.PedidoFilter;
 import com.algaworks.AprendizadoSpring.domain.model.Pedido;
 import com.algaworks.AprendizadoSpring.domain.model.Usuario;
 import com.algaworks.AprendizadoSpring.domain.repository.PedidoRepository;
-import com.algaworks.AprendizadoSpring.domain.filter.PedidoFilter;
 import com.algaworks.AprendizadoSpring.domain.service.EmissaoPedidoService;
 import com.algaworks.AprendizadoSpring.infrastructure.repository.spec.PedidoSpecs;
-import com.google.common.collect.ImmutableMap;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +30,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/pedidos")
@@ -113,12 +113,16 @@ public class PedidoController implements PedidoControllerOpenApi {
     }
 
     private Pageable traduzirPageable(Pageable apiPageable) {
-        var mapeamento = ImmutableMap.of(
+        var mapeamento = Map.of(
                 "codigo", "codigo",
+                "subtotal", "subtotal",
+                "taxaFrete", "taxaFrete",
+                "valorTotal", "valorTotal",
+                "dataCriacao", "dataCriacao",
                 "restaurante.nome", "restaurante.nome",
-                "nomeCliente", "cliente.nome",
-                "valorTotal", "valorTotal"
-
+                "restaurante.id", "restaurante.id",
+                "cliente.id", "cliente.id",
+                "cliente.nome", "cliente.nome"
         );
 
         return PageableTranslator.translate(apiPageable, mapeamento);
